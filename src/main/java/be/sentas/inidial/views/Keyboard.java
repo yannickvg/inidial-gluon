@@ -24,6 +24,8 @@ public class Keyboard extends VBox {
     @FXML
     private HBox thirdRow;
 
+    private OnInteractionListener listener;
+
     public Keyboard() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
                 "keyboard.fxml"));
@@ -63,7 +65,15 @@ public class Keyboard extends VBox {
         button.setMaxWidth(Double.MAX_VALUE);
         button.setPrefHeight(40);
         button.setDisable(!key.isEnabled());
+        button.setOnAction(event -> listener.onKeyPressed(key.getSymbol()));
         row.getChildren().add(button);
     }
 
+    public void setListener(OnInteractionListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnInteractionListener {
+        void onKeyPressed(String symbol);
+    }
 }

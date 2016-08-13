@@ -9,6 +9,7 @@ import com.gluonhq.charm.glisten.control.CharmListView;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import be.sentas.inidial.InidialApp;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,7 +18,7 @@ import javafx.scene.layout.HBox;
 
 import java.util.Arrays;
 
-public class ContactListPresenter {
+public class ContactListPresenter implements Keyboard.OnInteractionListener {
 
     @FXML
     private View mainView;
@@ -33,6 +34,8 @@ public class ContactListPresenter {
 
     @FXML
     private Label numberOfMatches;
+
+    private SimpleStringProperty searchedInitials;
 
     public void initialize() {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
@@ -51,12 +54,19 @@ public class ContactListPresenter {
 
                 keyboard.setMaxWidth(mainView.getScene().getWidth());
                 keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
+                keyboard.setListener(this);
 
-                initials.setText("YVG");
+                searchedInitials = new SimpleStringProperty("");
+                searchedInitials.addListener((observable, oldValue1, newValue1) -> initials.setText(searchedInitials.getValue()));
                 initials.setMaxWidth(Double.MAX_VALUE);
                 numberOfMatches.setText("3 matches");
             }
         });
+    }
+
+    @Override
+    public void onKeyPressed(String symbol) {
+        searchedInitials.set(searchedInitials.getValue().concat(symbol));
     }
     
     /*@FXML
