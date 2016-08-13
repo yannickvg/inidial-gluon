@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
@@ -51,17 +52,28 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
     private void initAppBar() {
         AppBar appBar = MobileApplication.getInstance().getAppBar();
         appBar.setTitleText("Inidial");
-        appBar.getActionItems().add(MaterialDesignIcon.CLEAR.button(e ->
-                System.out.println("Clear")));
         appBar.getActionItems().add(MaterialDesignIcon.SETTINGS.button(e ->
                 MobileApplication.getInstance().switchView(InidialApp.SETTINGS_VIEW)));
     }
 
     private void initHeader() {
         searchedInitials = new SimpleStringProperty("");
-        searchedInitials.addListener((observable, oldValue1, newValue1) -> initials.setText(searchedInitials.getValue()));
+        searchedInitials.addListener((observable, oldValue, newValue) -> searchedInitialsChanged(oldValue, newValue));
         initials.setMaxWidth(Double.MAX_VALUE);
         numberOfMatches.setText("3 matches");
+    }
+
+    private void searchedInitialsChanged(String oldValue, String newValue) {
+        AppBar appBar = MobileApplication.getInstance().getAppBar();
+        if (!newValue.equals("")) {
+            if (oldValue.equals("")) {
+                appBar.getActionItems().add(0, MaterialDesignIcon.CLEAR.button(e -> clearSearch()));
+            }
+        } else {
+            appBar.getActionItems().remove(0);
+        }
+        initials.setText(newValue);
+
     }
 
     private void initContacts() {
@@ -74,6 +86,11 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
         keyboard.setMaxWidth(mainView.getScene().getWidth());
         keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
         keyboard.setListener(this);
+    }
+
+    private void clearSearch() {
+        searchedInitials.setValue("");
+        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
     }
 
     @Override
