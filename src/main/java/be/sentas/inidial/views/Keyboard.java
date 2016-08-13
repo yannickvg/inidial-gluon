@@ -38,6 +38,7 @@ public class Keyboard extends VBox {
     }
 
     public void load(KeyboardConfig config) {
+        clear();
         for (KeyboardConfig.Key key : config.getFirstRow().getKeys()) {
             addSmallButton(firstRow, key);
         }
@@ -49,14 +50,20 @@ public class Keyboard extends VBox {
         }
     }
 
+    private void clear() {
+        firstRow.getChildren().clear();
+        secondRow.getChildren().clear();
+        thirdRow.getChildren().clear();
+    }
+
     private void addSmallButton(HBox row, KeyboardConfig.Key key) {
         Button button = new Button(key.getSymbol());
         button.setStyle("-fx-min-width: 0; -fx-font-family: Monaco");
         HBox.setHgrow(button, Priority.ALWAYS);
         button.setMaxWidth(Double.MAX_VALUE);
         button.setPrefHeight(40);
-        row.getChildren().add(button);
         button.setDisable(!key.isEnabled());
+        row.getChildren().add(button);
     }
 
 }
