@@ -2,6 +2,7 @@ package be.sentas.inidial.views;
 
 import be.sentas.inidial.Service;
 import be.sentas.inidial.model.Contact;
+import be.sentas.inidial.model.InitialChar;
 import be.sentas.inidial.model.KeyboardConfig;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
@@ -17,7 +18,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class ContactListPresenter implements Keyboard.OnInteractionListener {
 
@@ -80,22 +84,32 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
         ObservableList<Contact> contacts = FXCollections.observableList(Service.getService().getContacts());
         contactList.setCellFactory(param -> new ContactListCell());
         contactList.setItems(contacts);
+
     }
 
     private void initKeyboard() {
         keyboard.setMaxWidth(mainView.getScene().getWidth());
-        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
+        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, toStringList(Service.getService().getAvailableInitials())));
         keyboard.setListener(this);
+    }
+
+    private List<String> toStringList(List<InitialChar> availableInitials) {
+        List<String> stringList = new ArrayList<>();
+        for (InitialChar initialChar : availableInitials) {
+            stringList.add(initialChar.getInitial());
+        }
+        return stringList;
     }
 
     private void clearSearch() {
         searchedInitials.setValue("");
-        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
+        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, toStringList(Service.getService().getAvailableInitials())));
     }
 
     @Override
     public void onKeyPressed(String symbol) {
         searchedInitials.set(searchedInitials.getValue().concat(symbol));
+        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, toStringList(Service.getService().getNextCharacters(searchedInitials.getValue()))));
     }
     
     /*@FXML

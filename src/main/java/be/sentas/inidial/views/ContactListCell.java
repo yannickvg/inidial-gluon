@@ -1,6 +1,7 @@
 package be.sentas.inidial.views;
 
 import be.sentas.inidial.model.Contact;
+import be.sentas.inidial.model.NameDirection;
 import com.gluonhq.charm.glisten.control.Avatar;
 import com.gluonhq.charm.glisten.control.CharmListCell;
 import com.gluonhq.charm.glisten.control.ListTile;
@@ -31,7 +32,7 @@ public class ContactListCell extends CharmListCell<Contact> {
     public void updateItem(Contact item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null && !empty) {
-            name.setText(item.getFullName() + " " + item.getInitials());
+            name.setText(item.getDisplayName(NameDirection.FIRSTLAST));
             final Image image = new Image("picture.jpg");
             if (image != null) {
                 avatar.setImage(image);
