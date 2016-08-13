@@ -30,11 +30,12 @@ public class ContactListPresenter {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 AppBar appBar = MobileApplication.getInstance().getAppBar();
-                appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
-                        MobileApplication.getInstance().showLayer(InidialApp.MENU_LAYER)));
                 appBar.setTitleText("Inidial");
                 appBar.getActionItems().add(MaterialDesignIcon.CLEAR.button(e ->
                         System.out.println("Clear")));
+
+                appBar.getActionItems().add(MaterialDesignIcon.SETTINGS.button(e ->
+                        MobileApplication.getInstance().switchView(InidialApp.SETTINGS_VIEW)));
 
                 ObservableList<Contact> contacts = FXCollections.observableList(Service.getService().getContacts());
                 contactList.setCellFactory(param -> new ContactListCell());

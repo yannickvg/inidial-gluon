@@ -23,8 +23,8 @@ public class SettingsPresenter {
         settings.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 AppBar appBar = MobileApplication.getInstance().getAppBar();
-                appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
-                        MobileApplication.getInstance().showLayer(InidialApp.MENU_LAYER)));
+                appBar.setNavIcon(MaterialDesignIcon.ARROW_BACK.button(e ->
+                        MobileApplication.getInstance().switchView(InidialApp.CONTACTS_VIEW)));
                 appBar.setTitleText("Settings");
                 appBar.getActionItems().add(MaterialDesignIcon.FAVORITE.button(e -> 
                         System.out.println("Favorite")));

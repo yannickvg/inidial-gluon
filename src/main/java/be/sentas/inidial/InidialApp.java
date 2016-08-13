@@ -16,37 +16,19 @@ import javafx.stage.Stage;
 
 public class InidialApp extends MobileApplication {
 
-    public static final String PRIMARY_VIEW = HOME_VIEW;
-    public static final String SECONDARY_VIEW = "Settings View";
+    public static final String CONTACTS_VIEW = HOME_VIEW;
+    public static final String SETTINGS_VIEW = "Settings View";
     public static final String MENU_LAYER = "Side Menu";
     
     @Override
     public void init() {
-        addViewFactory(PRIMARY_VIEW, () -> (View) new ContactListView().getView());
-        addViewFactory(SECONDARY_VIEW, () -> (View) new SettingsView().getView());
-        
-        NavigationDrawer drawer = new NavigationDrawer();
-        
-        NavigationDrawer.Header header = new NavigationDrawer.Header("Inidial",
-                "SpeedDialer",
-                new Avatar(21, new Image(InidialApp.class.getResourceAsStream("/icon.png"))));
-        drawer.setHeader(header);
-        
-        final Item primaryItem = new Item("Contacts", MaterialDesignIcon.HOME.graphic());
-        final Item secondaryItem = new Item("Settings", MaterialDesignIcon.DASHBOARD.graphic());
-        drawer.getItems().addAll(primaryItem, secondaryItem);
-        
-        drawer.selectedItemProperty().addListener((obs, oldItem, newItem) -> {
-            hideLayer(MENU_LAYER);
-            switchView(newItem.equals(primaryItem) ? PRIMARY_VIEW : SECONDARY_VIEW);
-        });
-        
-        addLayerFactory(MENU_LAYER, () -> new SidePopupView(drawer));
+        addViewFactory(CONTACTS_VIEW, () -> (View) new ContactListView().getView());
+        addViewFactory(SETTINGS_VIEW, () -> (View) new SettingsView().getView());
     }
 
     @Override
     public void postInit(Scene scene) {
-        Swatch.BLUE.assignTo(scene);
+        Swatch.AMBER.assignTo(scene);
 
         scene.getStylesheets().add(InidialApp.class.getResource("style.css").toExternalForm());
         ((Stage) scene.getWindow()).getIcons().add(new Image(InidialApp.class.getResourceAsStream("/icon.png")));
