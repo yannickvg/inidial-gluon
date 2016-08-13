@@ -2,6 +2,7 @@ package be.sentas.inidial.views;
 
 import be.sentas.inidial.Service;
 import be.sentas.inidial.model.Contact;
+import be.sentas.inidial.model.KeyboardConfig;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.CharmListView;
@@ -11,7 +12,8 @@ import be.sentas.inidial.InidialApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+
+import java.util.Arrays;
 
 public class ContactListPresenter {
 
@@ -40,6 +42,7 @@ public class ContactListPresenter {
 
                 System.out.println(mainView.getScene().getWidth());
                 keyboard.setMaxWidth(mainView.getScene().getWidth());
+                keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
             }
         });
     }
