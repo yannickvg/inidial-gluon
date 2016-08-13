@@ -12,7 +12,7 @@
     <center>
         <VBox>
             <children>
-                <HBox fx:id="header">
+                <HBox>
                     <children>
                         <Label fx:id="initials"
                         styleClass="leftListHeader" HBox.hgrow="ALWAYS"/>

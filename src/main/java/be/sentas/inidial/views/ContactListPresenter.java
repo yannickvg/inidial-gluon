@@ -29,9 +29,6 @@ public class ContactListPresenter {
     private Keyboard keyboard;
 
     @FXML
-    private HBox header;
-
-    @FXML
     private Label initials;
 
     @FXML
@@ -52,11 +49,9 @@ public class ContactListPresenter {
                 contactList.setCellFactory(param -> new ContactListCell());
                 contactList.setItems(contacts);
 
-                System.out.println(mainView.getScene().getWidth());
                 keyboard.setMaxWidth(mainView.getScene().getWidth());
                 keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
 
-                //header.setMaxWidth(mainView.getScene().getWidth());
                 initials.setText("YVG");
                 initials.setMaxWidth(Double.MAX_VALUE);
                 numberOfMatches.setText("3 matches");
