@@ -12,6 +12,8 @@ import be.sentas.inidial.InidialApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 import java.util.Arrays;
 
@@ -25,6 +27,15 @@ public class ContactListPresenter {
 
     @FXML
     private Keyboard keyboard;
+
+    @FXML
+    private HBox header;
+
+    @FXML
+    private Label initials;
+
+    @FXML
+    private Label numberOfMatches;
 
     public void initialize() {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
@@ -44,6 +55,11 @@ public class ContactListPresenter {
                 System.out.println(mainView.getScene().getWidth());
                 keyboard.setMaxWidth(mainView.getScene().getWidth());
                 keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
+
+                //header.setMaxWidth(mainView.getScene().getWidth());
+                initials.setText("YVG");
+                initials.setMaxWidth(Double.MAX_VALUE);
+                numberOfMatches.setText("3 matches");
             }
         });
     }

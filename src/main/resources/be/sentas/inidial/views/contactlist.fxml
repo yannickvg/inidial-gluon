@@ -5,11 +5,21 @@
 
 <?import be.sentas.inidial.views.Keyboard?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
 <View fx:id="mainView" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="be.sentas.inidial.views.ContactListPresenter">
     <center>
         <VBox>
             <children>
+                <HBox fx:id="header">
+                    <children>
+                        <Label fx:id="initials"
+                        styleClass="leftListHeader" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="numberOfMatches"
+                               styleClass="rightListHeader"/>
+                    </children>
+                </HBox>
                 <CharmListView fx:id="contactList" />
                 <Keyboard fx:id="keyboard"/>
             </children>

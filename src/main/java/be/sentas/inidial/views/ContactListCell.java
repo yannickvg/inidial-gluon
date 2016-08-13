@@ -26,7 +26,7 @@ public class ContactListCell extends CharmListCell<Contact> {
         super.updateItem(item, empty);
         if (item != null && !empty) {
             tile.textProperty().setAll(item.getFullName(), item.getInitials());
-            /*final Image image = USStates.getImage(item.getFlag());
+            /*final Image image = new Image("picture.jpg");
             if (image != null) {
                 imageView.setImage(image);
             }*/
