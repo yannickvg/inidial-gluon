@@ -40,28 +40,40 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
     public void initialize() {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
-                AppBar appBar = MobileApplication.getInstance().getAppBar();
-                appBar.setTitleText("Inidial");
-                appBar.getActionItems().add(MaterialDesignIcon.CLEAR.button(e ->
-                        System.out.println("Clear")));
-
-                appBar.getActionItems().add(MaterialDesignIcon.SETTINGS.button(e ->
-                        MobileApplication.getInstance().switchView(InidialApp.SETTINGS_VIEW)));
-
-                ObservableList<Contact> contacts = FXCollections.observableList(Service.getService().getContacts());
-                contactList.setCellFactory(param -> new ContactListCell());
-                contactList.setItems(contacts);
-
-                keyboard.setMaxWidth(mainView.getScene().getWidth());
-                keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
-                keyboard.setListener(this);
-
-                searchedInitials = new SimpleStringProperty("");
-                searchedInitials.addListener((observable, oldValue1, newValue1) -> initials.setText(searchedInitials.getValue()));
-                initials.setMaxWidth(Double.MAX_VALUE);
-                numberOfMatches.setText("3 matches");
+                initAppBar();
+                initContacts();
+                initKeyboard();
+                initHeader();
             }
         });
+    }
+
+    private void initAppBar() {
+        AppBar appBar = MobileApplication.getInstance().getAppBar();
+        appBar.setTitleText("Inidial");
+        appBar.getActionItems().add(MaterialDesignIcon.CLEAR.button(e ->
+                System.out.println("Clear")));
+        appBar.getActionItems().add(MaterialDesignIcon.SETTINGS.button(e ->
+                MobileApplication.getInstance().switchView(InidialApp.SETTINGS_VIEW)));
+    }
+
+    private void initHeader() {
+        searchedInitials = new SimpleStringProperty("");
+        searchedInitials.addListener((observable, oldValue1, newValue1) -> initials.setText(searchedInitials.getValue()));
+        initials.setMaxWidth(Double.MAX_VALUE);
+        numberOfMatches.setText("3 matches");
+    }
+
+    private void initContacts() {
+        ObservableList<Contact> contacts = FXCollections.observableList(Service.getService().getContacts());
+        contactList.setCellFactory(param -> new ContactListCell());
+        contactList.setItems(contacts);
+    }
+
+    private void initKeyboard() {
+        keyboard.setMaxWidth(mainView.getScene().getWidth());
+        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, Arrays.asList("A", "B", "C")));
+        keyboard.setListener(this);
     }
 
     @Override
