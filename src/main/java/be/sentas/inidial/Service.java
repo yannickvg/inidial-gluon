@@ -12,33 +12,35 @@ public class Service {
     private static Service service;
 
     private List<Contact> contacts;
+    private Map<String, List<Contact>> contactsMap;
+    private InitialsMap initialsMap;
 
-    private Service() {
+    private NameDirection direction;
+
+    private Service(NameDirection direction) {
         contacts = new ArrayList<>();
         contacts.add(new Contact("Yannick", "Van Godtsenhoven"));
         contacts.add(new Contact("Liesbeth", "Toorman"));
         contacts.add(new Contact("Pieter", "Jagers"));
         contacts.add(new Contact("Herman", "Toorman"));
-        fillCombined(NameDirection.FIRSTLAST);
+        this.direction = direction;
+        fillCombined(direction);
     }
 
-    public static Service getService() {
-        if (service == null) {
-            service = new Service();
+    public static Service getService(NameDirection direction) {
+        if (service == null || !service.getDirection().equals(direction)) {
+            service = new Service(direction);
         }
         return service;
     }
 
-    public List<Contact> getContacts() {
-        return contacts;
+    public NameDirection getDirection() {
+        return direction;
     }
-
-    private Map<String, List<Contact>> personMap;
-    private InitialsMap initialsMap;
 
     private void fillCombined(NameDirection direction) {
         initialsMap = new InitialsMap();
-        personMap = new HashMap<>();
+        contactsMap = new HashMap<>();
         for (Contact person : contacts) {
             StringBuilder builder = new StringBuilder();
             InitialChar character = null;
@@ -65,12 +67,12 @@ public class Service {
                 }
             }
             String intials = builder.toString().toLowerCase();
-            if (personMap.containsKey(intials)) {
-                personMap.get(intials).add(person);
+            if (contactsMap.containsKey(intials)) {
+                contactsMap.get(intials).add(person);
             } else {
                 List<Contact> list = new ArrayList<>();
                 list.add(person);
-                personMap.put(intials, list);
+                contactsMap.put(intials, list);
             }
             initialsMap.addInitials(character);
         }
@@ -100,11 +102,14 @@ public class Service {
         return new ArrayList<>();
     }
 
-    public List<Contact> getPersonsByInitials(String initials,
-                                              NameDirection direction) {
+    public List<Contact> getContacts() {
+        return getContactsByInitials("");
+    }
+
+    public List<Contact> getContactsByInitials(String initials) {
         initials = initials.toLowerCase();
         List<Contact> personsList = new ArrayList<Contact>();
-        for (Map.Entry<String, List<Contact>> persons : personMap.entrySet()) {
+        for (Map.Entry<String, List<Contact>> persons : contactsMap.entrySet()) {
             if (persons.getKey().toLowerCase().startsWith(initials)) {
                 personsList.addAll(persons.getValue());
             }
@@ -144,5 +149,4 @@ public class Service {
     private boolean isNotBlank(String value) {
         return value != null && !value.trim().equals("");
     }
-
 }

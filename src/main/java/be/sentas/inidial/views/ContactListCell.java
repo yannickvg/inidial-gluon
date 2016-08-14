@@ -21,18 +21,22 @@ public class ContactListCell extends CharmListCell<Contact> {
     private final Avatar avatar;
     private final Label name;
 
-    public ContactListCell() {
+    private final NameDirection direction;
+
+    public ContactListCell(NameDirection direction) {
+        this.direction = direction;
         container = new HBox();
         avatar = new Avatar();
         name = new Label();
         container.getChildren().addAll(avatar, name);
     }
 
+
     @Override
     public void updateItem(Contact item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null && !empty) {
-            name.setText(item.getDisplayName(NameDirection.FIRSTLAST));
+            name.setText(item.getDisplayName(direction));
             final Image image = new Image("picture.jpg");
             if (image != null) {
                 avatar.setImage(image);
