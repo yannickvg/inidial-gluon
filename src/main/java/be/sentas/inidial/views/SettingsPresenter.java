@@ -70,29 +70,17 @@ public class SettingsPresenter {
     }
 
     private void updateServiceNameDirection(NameDirection nv) {
-        SettingsConfig newConfig = new SettingsConfig();
-        newConfig.setAutodial(settingsConfig.isAutoDial());
-        newConfig.setKeyboardLayout(settingsConfig.getKeyboardLayout());
-        newConfig.setNameDirection(nv);
-        storageService.settingsConfigProperty().set(newConfig);
+        storageService.settingsConfigProperty().getValue().setNameDirection(nv);
         storageService.storeSettingsConfig();
     }
 
     private void updateServiceKeyboardLayout(KeyboardConfig.Layout nv) {
-        SettingsConfig newConfig = new SettingsConfig();
-        newConfig.setAutodial(settingsConfig.isAutoDial());
-        newConfig.setKeyboardLayout(nv);
-        newConfig.setNameDirection(settingsConfig.getNameDirection());
-        storageService.settingsConfigProperty().set(newConfig);
+        storageService.settingsConfigProperty().getValue().setKeyboardLayout(nv);
         storageService.storeSettingsConfig();
     }
 
     private void updateServiceAutoDial(Boolean nv) {
-        SettingsConfig newConfig = new SettingsConfig();
-        newConfig.setAutodial(nv);
-        newConfig.setKeyboardLayout(settingsConfig.getKeyboardLayout());
-        newConfig.setNameDirection(settingsConfig.getNameDirection());
-        storageService.settingsConfigProperty().set(newConfig);
+        storageService.settingsConfigProperty().getValue().setAutodial(nv);
         storageService.storeSettingsConfig();
     }
 
