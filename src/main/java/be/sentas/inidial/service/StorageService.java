@@ -69,8 +69,6 @@ public class StorageService {
         gluonSettingsConfig.stateProperty().addListener((obs, ov, nv) -> {
             if (ConnectState.SUCCEEDED.equals(nv) && gluonSettingsConfig.get() != null) {
                 settingsConfig.set(gluonSettingsConfig.get());
-            } else {
-                storeSettingsConfig();
             }
         });
     }

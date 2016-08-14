@@ -43,8 +43,6 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
 
     private SettingsConfig settingsConfig;
 
-    private NameDirection direction = NameDirection.LASTFIRST;
-
     public void initialize() {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
@@ -93,13 +91,13 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
     }
 
     private void initContacts() {
-        contactList.setCellFactory(param -> new ContactListCell(direction));
-        updateList(FXCollections.observableList(InitialsService.getService(direction).getContacts()));
+        contactList.setCellFactory(param -> new ContactListCell(settingsConfig.getNameDirection()));
+        updateList(FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContacts()));
 
     }
 
     private void initKeyboard() {
-        keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(direction).getAvailableInitials())));
+        keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(settingsConfig.getNameDirection()).getAvailableInitials())));
         keyboard.setListener(this);
     }
 
@@ -113,15 +111,15 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
 
     private void clearSearch() {
         searchedInitials.setValue("");
-        keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(direction).getAvailableInitials())));
-        updateList(FXCollections.observableList(InitialsService.getService(direction).getContacts()));
+        keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(settingsConfig.getNameDirection()).getAvailableInitials())));
+        updateList(FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContacts()));
     }
 
     @Override
     public void onKeyPressed(String symbol) {
         searchedInitials.set(searchedInitials.getValue().concat(symbol));
-        keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(direction).getNextCharacters(searchedInitials.getValue()))));
-        updateList(FXCollections.observableList(InitialsService.getService(direction).getContactsByInitials(searchedInitials.getValue())));
+        keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(settingsConfig.getNameDirection()).getNextCharacters(searchedInitials.getValue()))));
+        updateList(FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContactsByInitials(searchedInitials.getValue())));
     }
 
     private void updateList(ObservableList<Contact> contacts) {

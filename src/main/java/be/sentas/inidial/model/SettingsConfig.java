@@ -2,6 +2,8 @@ package be.sentas.inidial.model;
 
 import javafx.beans.property.*;
 
+import javax.lang.model.element.Name;
+
 /**
  * Created by yannick on 14/08/16.
  */
@@ -21,6 +23,10 @@ public class SettingsConfig {
         autoDial.set(value);
     }
 
+
+    /*
+        KEYBOARD LAYOUT
+     */
     private final ObjectProperty<KeyboardConfig.Layout> keyboardLayout = new SimpleObjectProperty<KeyboardConfig.Layout>(this, "keyboardLayout", KeyboardConfig.Layout.QWERTY) {
         @Override
         protected void invalidated() {
@@ -44,6 +50,36 @@ public class SettingsConfig {
         @Override
         protected void invalidated() {
             setKeyboardLayout(KeyboardConfig.Layout.values()[get()]);
+        }
+
+    };
+
+    /*
+        NAME DIRECTION
+     */
+    private final ObjectProperty<NameDirection> nameDirection = new SimpleObjectProperty<NameDirection>(this, "nameDirection", NameDirection.FIRSTLAST) {
+        @Override
+        protected void invalidated() {
+            nameDirectionOrdinal.set(get().ordinal());
+        }
+    };
+
+    public final ObjectProperty<NameDirection> nameDirection() {
+        return nameDirection;
+    }
+
+    public final NameDirection getNameDirection() {
+        return nameDirection.get();
+    }
+
+    public final void setNameDirection(NameDirection value) {
+        nameDirection.set(value);
+    }
+
+    private final IntegerProperty nameDirectionOrdinal = new SimpleIntegerProperty(this, "nameDirectionOrdinal", NameDirection.FIRSTLAST.ordinal()) {
+        @Override
+        protected void invalidated() {
+            setNameDirection(NameDirection.values()[get()]);
         }
 
     };
