@@ -1,4 +1,4 @@
-package be.sentas.inidial;
+package be.sentas.inidial.service;
 
 import be.sentas.inidial.model.*;
 
@@ -7,9 +7,9 @@ import java.util.*;
 /**
  * Created by yannick on 11/08/16.
  */
-public class Service {
+public class InitialsService {
 
-    private static Service service;
+    private static InitialsService service;
 
     private List<Contact> contacts;
     private Map<String, List<Contact>> contactsMap;
@@ -17,7 +17,7 @@ public class Service {
 
     private NameDirection direction;
 
-    private Service(NameDirection direction) {
+    private InitialsService(NameDirection direction) {
         contacts = new ArrayList<>();
         contacts.add(new Contact("Yannick", "Van Godtsenhoven"));
         contacts.add(new Contact("Liesbeth", "Toorman"));
@@ -27,9 +27,9 @@ public class Service {
         fillCombined(direction);
     }
 
-    public static Service getService(NameDirection direction) {
+    public static InitialsService getService(NameDirection direction) {
         if (service == null || !service.getDirection().equals(direction)) {
-            service = new Service(direction);
+            service = new InitialsService(direction);
         }
         return service;
     }

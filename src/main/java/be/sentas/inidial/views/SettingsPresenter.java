@@ -2,6 +2,7 @@ package be.sentas.inidial.views;
 
 import be.sentas.inidial.model.KeyboardConfig;
 import be.sentas.inidial.model.SettingsConfig;
+import be.sentas.inidial.service.StorageService;
 import com.gluonhq.charm.glisten.animation.BounceInRightTransition;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
@@ -19,6 +20,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 
+import javax.inject.Inject;
+
 public class SettingsPresenter {
 
     @FXML
@@ -26,6 +29,11 @@ public class SettingsPresenter {
 
     @FXML
     private SettingsPane settingsPane;
+
+    @Inject
+    private StorageService storageService;
+
+    private SettingsConfig settingsConfig;
 
     public void initialize() {
         settings.setShowTransitionFactory(BounceInRightTransition::new);
@@ -37,24 +45,40 @@ public class SettingsPresenter {
                         MobileApplication.getInstance().switchView(InidialApp.CONTACTS_VIEW)));
                 appBar.setTitleText("Settings");
 
-                SettingsConfig settings = new SettingsConfig();
+                settingsConfig = new SettingsConfig();
+                updateSettings(storageService.settingsConfigProperty().get());
 
-                settings.autoDialProperty().addListener((observable, oldValue1, newValue1) -> System.out.println(newValue1));
-                settings.keyboardLayout().addListener((observable, oldValue1, newValue1) -> System.out.println(newValue1));
+                settingsConfig.autoDialProperty().addListener((observable, ov, nv) -> updateServiceAutoDial(nv));
+                settingsConfig.keyboardLayout().addListener((observable, ov, nv) -> updateServiceKeyboardLayout(nv));
 
-                final Option<BooleanProperty> autoDialOption = new DefaultOption<BooleanProperty>(null,
+                final Option<BooleanProperty> autoDialOption = new DefaultOption<>(null,
                         "Auto Dial", "Immediately call when a contact has one number",
-                        null, settings.autoDialProperty(), true);
+                        null, settingsConfig.autoDialProperty(), true);
+
                 final DefaultOption<ObjectProperty<KeyboardConfig.Layout>> keyboardLayout = new DefaultOption<>(null,
-                        "Keyboard", "Layout of the keyboard", null, settings.keyboardLayout(), true);
+                        "Keyboard", "Layout of the keyboard", null, settingsConfig.keyboardLayout(), true);
+
                 settingsPane.getOptions().addAll(autoDialOption, keyboardLayout);
                 settingsPane.setSearchBoxVisible(false);
+
+                storageService.retrieveSettingsConfig();
 
             }
         });
     }
 
+    private void updateServiceKeyboardLayout(KeyboardConfig.Layout nv) {
+        storageService.settingsConfigProperty().getValue().setKeyboardLayout(nv);
+        storageService.storeSettingsConfig();
+    }
 
+    private void updateServiceAutoDial(Boolean nv) {
+        storageService.settingsConfigProperty().getValue().setAutodial(nv);
+        storageService.storeSettingsConfig();
+    }
 
-
+    private void updateSettings(SettingsConfig settingsConfig) {
+        this.settingsConfig.setAutodial(settingsConfig.isAutoDial());
+        this.settingsConfig.setKeyboardLayout(settingsConfig.getKeyboardLayout());
+    }
 }

@@ -1,10 +1,8 @@
 package be.sentas.inidial.views;
 
-import be.sentas.inidial.Service;
-import be.sentas.inidial.model.Contact;
-import be.sentas.inidial.model.InitialChar;
-import be.sentas.inidial.model.KeyboardConfig;
-import be.sentas.inidial.model.NameDirection;
+import be.sentas.inidial.model.*;
+import be.sentas.inidial.service.InitialsService;
+import be.sentas.inidial.service.StorageService;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.CharmListView;
@@ -17,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,17 +38,31 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
 
     private SimpleStringProperty searchedInitials;
 
+    @Inject
+    private StorageService storageService;
+
+    private SettingsConfig settingsConfig;
+
     private NameDirection direction = NameDirection.LASTFIRST;
 
     public void initialize() {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 initAppBar();
-                initContacts();
-                initKeyboard();
-                initHeader();
+                storageService.settingsConfigProperty().addListener((observable, oldValue1, newValue1) -> {
+                    updateSettings();
+                    initKeyboard();
+                    initContacts();
+                    initHeader();
+                });
+                storageService.retrieveSettingsConfig();
             }
         });
+
+    }
+
+    private void updateSettings() {
+        settingsConfig = storageService.settingsConfigProperty().get();
     }
 
     private void initAppBar() {
@@ -81,13 +94,12 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
 
     private void initContacts() {
         contactList.setCellFactory(param -> new ContactListCell(direction));
-        updateList(FXCollections.observableList(Service.getService(direction).getContacts()));
+        updateList(FXCollections.observableList(InitialsService.getService(direction).getContacts()));
 
     }
 
     private void initKeyboard() {
-        keyboard.setMaxWidth(mainView.getScene().getWidth());
-        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, toStringList(Service.getService(direction).getAvailableInitials())));
+        keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(direction).getAvailableInitials())));
         keyboard.setListener(this);
     }
 
@@ -101,15 +113,15 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
 
     private void clearSearch() {
         searchedInitials.setValue("");
-        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, toStringList(Service.getService(direction).getAvailableInitials())));
-        updateList(FXCollections.observableList(Service.getService(direction).getContacts()));
+        keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(direction).getAvailableInitials())));
+        updateList(FXCollections.observableList(InitialsService.getService(direction).getContacts()));
     }
 
     @Override
     public void onKeyPressed(String symbol) {
         searchedInitials.set(searchedInitials.getValue().concat(symbol));
-        keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, toStringList(Service.getService(direction).getNextCharacters(searchedInitials.getValue()))));
-        updateList(FXCollections.observableList(Service.getService(direction).getContactsByInitials(searchedInitials.getValue())));
+        keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(direction).getNextCharacters(searchedInitials.getValue()))));
+        updateList(FXCollections.observableList(InitialsService.getService(direction).getContactsByInitials(searchedInitials.getValue())));
     }
 
     private void updateList(ObservableList<Contact> contacts) {

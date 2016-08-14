@@ -1,10 +1,6 @@
 package be.sentas.inidial.model;
 
-import be.sentas.inidial.views.Keyboard;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 
 /**
  * Created by yannick on 14/08/16.
@@ -25,7 +21,12 @@ public class SettingsConfig {
         autoDial.set(value);
     }
 
-    private final ObjectProperty<KeyboardConfig.Layout> keyboardLayout = new SimpleObjectProperty<>(this, "keyboardLayout", KeyboardConfig.Layout.QWERTY);
+    private final ObjectProperty<KeyboardConfig.Layout> keyboardLayout = new SimpleObjectProperty<KeyboardConfig.Layout>(this, "keyboardLayout", KeyboardConfig.Layout.QWERTY) {
+        @Override
+        protected void invalidated() {
+            keyboardLayoutOrdinal.set(get().ordinal());
+        }
+    };
 
     public final ObjectProperty<KeyboardConfig.Layout> keyboardLayout() {
         return keyboardLayout;
@@ -38,5 +39,13 @@ public class SettingsConfig {
     public final void setKeyboardLayout(KeyboardConfig.Layout value) {
         keyboardLayout.set(value);
     }
+
+    private final IntegerProperty keyboardLayoutOrdinal = new SimpleIntegerProperty(this, "keyboardLayoutOrdinal", KeyboardConfig.Layout.QWERTY.ordinal()) {
+        @Override
+        protected void invalidated() {
+            setKeyboardLayout(KeyboardConfig.Layout.values()[get()]);
+        }
+
+    };
 
 }
