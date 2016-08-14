@@ -53,7 +53,10 @@ public class KeyboardConfig {
     public enum Layout {
         QWERTY(Arrays.asList("Q","W","E","R","T","Y","U","I","O","P"),
                 Arrays.asList("A","S","D","F","G","H","J","K","L"),
-                Arrays.asList("Z","X","C","V","B","N","M")),;
+                Arrays.asList("Z","X","C","V","B","N","M")),
+        AZERTY(Arrays.asList("A","Z","E","R","T","Y","U","I","O","P"),
+                Arrays.asList("Q","S","D","F","G","H","J","K","L", "M"),
+                        Arrays.asList("W","X","C","V","B","N")),;
 
         private List<List<String>> layout;
 
