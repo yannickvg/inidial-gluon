@@ -74,7 +74,6 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
         searchedInitials = new SimpleStringProperty("");
         searchedInitials.addListener((observable, oldValue, newValue) -> searchedInitialsChanged(oldValue, newValue));
         initials.setMaxWidth(Double.MAX_VALUE);
-        numberOfMatches.setText("3 matches");
     }
 
     private void searchedInitialsChanged(String oldValue, String newValue) {
@@ -113,13 +112,21 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
         searchedInitials.setValue("");
         keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(settingsConfig.getNameDirection()).getAvailableInitials())));
         updateList(FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContacts()));
+        numberOfMatches.setText("");
     }
 
     @Override
     public void onKeyPressed(String symbol) {
         searchedInitials.set(searchedInitials.getValue().concat(symbol));
         keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(settingsConfig.getNameDirection()).getNextCharacters(searchedInitials.getValue()))));
-        updateList(FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContactsByInitials(searchedInitials.getValue())));
+        ObservableList<Contact> contacts = FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContactsByInitials(searchedInitials.getValue()));
+        updateList(contacts);
+        if (contacts.size() == 1) {
+            numberOfMatches.setText("1 match");
+        } else {
+            numberOfMatches.setText(contacts.size() + " matches");
+        }
+
     }
 
     private void updateList(ObservableList<Contact> contacts) {
