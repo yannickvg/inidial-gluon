@@ -4,6 +4,7 @@ import be.sentas.inidial.Service;
 import be.sentas.inidial.model.Contact;
 import be.sentas.inidial.model.InitialChar;
 import be.sentas.inidial.model.KeyboardConfig;
+import be.sentas.inidial.model.NameDirection;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.CharmListView;
@@ -81,9 +82,8 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
     }
 
     private void initContacts() {
-        ObservableList<Contact> contacts = FXCollections.observableList(Service.getService().getContacts());
         contactList.setCellFactory(param -> new ContactListCell());
-        contactList.setItems(contacts);
+        updateList(FXCollections.observableList(Service.getService().getContacts()));
 
     }
 
@@ -104,12 +104,18 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
     private void clearSearch() {
         searchedInitials.setValue("");
         keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, toStringList(Service.getService().getAvailableInitials())));
+        updateList(FXCollections.observableList(Service.getService().getContacts()));
     }
 
     @Override
     public void onKeyPressed(String symbol) {
         searchedInitials.set(searchedInitials.getValue().concat(symbol));
         keyboard.load(KeyboardConfig.getConfig(KeyboardConfig.Layout.QWERTY, toStringList(Service.getService().getNextCharacters(searchedInitials.getValue()))));
+        updateList(FXCollections.observableList(Service.getService().getPersonsByInitials(searchedInitials.getValue(), NameDirection.FIRSTLAST)));
+    }
+
+    private void updateList(ObservableList<Contact> contacts) {
+        contactList.setItems(contacts);
     }
     
     /*@FXML
