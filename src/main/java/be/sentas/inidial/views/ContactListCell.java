@@ -23,12 +23,15 @@ public class ContactListCell extends CharmListCell<Contact> {
 
     private final NameDirection direction;
 
-    public ContactListCell(NameDirection direction) {
+    private OnInteractionListener listener;
+
+    public ContactListCell(NameDirection direction, OnInteractionListener listener) {
         this.direction = direction;
         container = new HBox();
         avatar = new Avatar();
         name = new Label();
         container.getChildren().addAll(avatar, name);
+        this.listener = listener;
     }
 
 
@@ -44,9 +47,16 @@ public class ContactListCell extends CharmListCell<Contact> {
             container.setAlignment(Pos.CENTER_LEFT);
             name.setPadding(new Insets(0,16,0,16));
             setGraphic(container);
+            if (this.listener != null) {
+                container.setOnMouseClicked(event -> listener.onItemClicked(item));
+            }
         } else {
             setGraphic(null);
         }
+    }
+
+    public interface OnInteractionListener {
+        void onItemClicked(Contact item);
     }
 
 }

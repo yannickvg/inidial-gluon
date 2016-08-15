@@ -1,5 +1,7 @@
 package be.sentas.inidial.views;
 
+import be.sentas.inidial.device.NativePlatformFactory;
+import be.sentas.inidial.device.NativeService;
 import be.sentas.inidial.model.*;
 import be.sentas.inidial.service.InitialsService;
 import be.sentas.inidial.service.StorageService;
@@ -19,7 +21,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactListPresenter implements Keyboard.OnInteractionListener {
+public class ContactListPresenter implements Keyboard.OnInteractionListener, ContactListCell.OnInteractionListener {
 
     @FXML
     private View mainView;
@@ -42,6 +44,8 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
     private StorageService storageService;
 
     private SettingsConfig settingsConfig;
+
+    final NativeService nativeService = NativePlatformFactory.getPlatform().getNativeService();
 
     public void initialize() {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
@@ -95,7 +99,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
     }
 
     private void initContacts() {
-        contactList.setCellFactory(param -> new ContactListCell(settingsConfig.getNameDirection()));
+        contactList.setCellFactory(param -> new ContactListCell(settingsConfig.getNameDirection(), this));
         updateList(FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContacts()));
 
     }
@@ -136,6 +140,11 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
 
     private void updateList(ObservableList<Contact> contacts) {
         contactList.setItems(contacts);
+    }
+
+    @Override
+    public void onItemClicked(Contact item) {
+        nativeService.callNumber("12345678");
     }
     
     /*@FXML
