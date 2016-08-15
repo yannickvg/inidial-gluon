@@ -47,16 +47,21 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 initAppBar();
+                initScreenContent();
                 storageService.settingsConfigProperty().addListener((observable, oldValue1, newValue1) -> {
-                    updateSettings();
-                    initKeyboard();
-                    initContacts();
-                    initHeader();
+                    initScreenContent();
                 });
                 storageService.retrieveSettingsConfig();
             }
         });
 
+    }
+
+    private void initScreenContent() {
+        updateSettings();
+        initKeyboard();
+        initContacts();
+        initHeader();
     }
 
     private void updateSettings() {
