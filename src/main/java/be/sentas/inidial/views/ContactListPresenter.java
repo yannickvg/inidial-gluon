@@ -63,8 +63,8 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
 
     private void initScreenContent() {
         updateSettings();
-        initKeyboard();
         initContacts();
+        initKeyboard();
         initHeader();
     }
 
@@ -99,9 +99,10 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     }
 
     private void initContacts() {
+        List<Contact> contacts = nativeService.getContacts();
+        InitialsService.initService(settingsConfig.getNameDirection(), contacts);
         contactList.setCellFactory(param -> new ContactListCell(settingsConfig.getNameDirection(), this));
         updateList(FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContacts()));
-
     }
 
     private void initKeyboard() {

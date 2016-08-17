@@ -1,5 +1,6 @@
 package be.sentas.inidial.service;
 
+import be.sentas.inidial.Utils;
 import be.sentas.inidial.model.*;
 
 import java.util.*;
@@ -27,10 +28,24 @@ public class InitialsService {
         fillCombined(direction);
     }
 
+    private InitialsService(NameDirection direction, List<Contact> contacts) {
+        this.contacts = contacts;
+        this.direction = direction;
+        fillCombined(direction);
+    }
+
     public static InitialsService getService(NameDirection direction) {
-        if (service == null || !service.getDirection().equals(direction)) {
-            service = new InitialsService(direction);
+        if (service == null) {
+            throw new IllegalStateException("Service not initialized, call initService first");
         }
+        if (!service.getDirection().equals(direction)) {
+            service.fillCombined(direction);
+        }
+        return service;
+    }
+
+    public static InitialsService initService(NameDirection direction, List<Contact> contacts) {
+        service = new InitialsService(direction, contacts);
         return service;
     }
 
@@ -45,7 +60,7 @@ public class InitialsService {
             StringBuilder builder = new StringBuilder();
             InitialChar character = null;
             InitialChar previousCharacter = null;
-            if (isNotBlank(person.getDisplayName(direction))) {
+            if (Utils.isNotBlank(person.getDisplayName(direction))) {
                 String[] splittedName = person.getDisplayName(direction).split(
                         " ");
                 for (String namePart : splittedName) {
@@ -140,13 +155,9 @@ public class InitialsService {
     }
 
     private String getFirstCharacter(String value) {
-        if (isNotBlank(value))  {
+        if (Utils.isNotBlank(value))  {
             return value.substring(0, 1);
         }
         return null;
-    }
-
-    private boolean isNotBlank(String value) {
-        return value != null && !value.trim().equals("");
     }
 }
