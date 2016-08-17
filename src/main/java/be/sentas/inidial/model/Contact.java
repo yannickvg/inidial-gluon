@@ -1,5 +1,8 @@
 package be.sentas.inidial.model;
 
+import be.sentas.inidial.Utils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,30 +10,51 @@ import java.util.List;
  */
 public class Contact {
 
+    private String id;
+
     private String firstName;
 
     private String lastName;
 
-    private List<PhoneNumber> numbers;
+    private List<Phone> numbers = new ArrayList<>();
+
+    public Contact() {
+    }
 
     public Contact(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public List<PhoneNumber> getNumbers() {
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public List<Phone> getNumbers() {
         return numbers;
     }
 
-    public void setNumbers(List<PhoneNumber> numbers) {
+    public void setNumbers(List<Phone> numbers) {
         this.numbers = numbers;
     }
 
@@ -47,6 +71,10 @@ public class Contact {
             sb.append(isNotBlank(firstName) ? " " + firstName : "");
             return sb.toString();
         }
+    }
+
+    public boolean hasName() {
+        return Utils.isNotBlank(getDisplayName(NameDirection.FIRSTLAST));
     }
 
     private boolean isNotBlank(String value) {
