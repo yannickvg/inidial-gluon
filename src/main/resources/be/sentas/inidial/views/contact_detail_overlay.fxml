@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import com.gluonhq.charm.glisten.layout.Layer?>
+
+<fx:root fx:id="overlay" type="Layer"
+         minHeight="-Infinity" maxHeight="-Infinity"
+         minWidth="-Infinity" maxWidth="-Infinity"
+         xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
+         >
+    <children>
+    </children>
+</fx:root>
+<!-- style="-fx-background-color: rgba(64,72,74,0.7);"-->

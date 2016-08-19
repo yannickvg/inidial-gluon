@@ -5,23 +5,29 @@ import be.sentas.inidial.device.NativeService;
 import be.sentas.inidial.model.*;
 import be.sentas.inidial.service.InitialsService;
 import be.sentas.inidial.service.StorageService;
+import com.gluonhq.charm.glisten.application.GlassPane;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.CharmListView;
+import com.gluonhq.charm.glisten.layout.Layer;
+import com.gluonhq.charm.glisten.layout.MobileLayoutPane;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import be.sentas.inidial.InidialApp;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactListPresenter implements Keyboard.OnInteractionListener, ContactListCell.OnInteractionListener {
+public class ContactListPresenter implements Keyboard.OnInteractionListener, ContactListCell.OnInteractionListener, ContactDetailOverlay.OnInteractionListener {
 
     @FXML
     private View mainView;
@@ -144,13 +150,28 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     }
 
     @Override
-    public void onItemClicked(Contact item) {
-        nativeService.callNumber("12345678");
+    public void onItemClicked(Contact contact) {
+        //nativeService.callNumber("12345678");s
+        addGlobalOverlay(new ContactDetailOverlay(storageService, this, contact));
+    }
+
+    private void addGlobalOverlay(Layer layer) {
+        MobileApplication.getInstance().getGlassPane().setBackgroundFade(0.7);
+        MobileApplication.getInstance().getGlassPane().getLayers().add(layer);
     }
     
     /*@FXML
     void buttonClick() {
         label.setText("Hello JavaFX Universe!");
     }*/
-    
+
+    @Override
+    public void onNumberSelected(String number) {
+
+    }
+
+    @Override
+    public void onCancelled() {
+
+    }
 }

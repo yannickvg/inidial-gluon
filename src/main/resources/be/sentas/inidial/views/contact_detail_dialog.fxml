@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root fx:id="dialog" spacing="10" type="VBox"
+         minHeight="-Infinity" maxHeight="-Infinity"
+         minWidth="-Infinity" maxWidth="-Infinity"
+         xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
+         style="-fx-background-color: white;"
+>
+    <children>
+        <Label fx:id="name"/>
+    </children>
+    <padding>
+        <Insets bottom="20" top="20" right="20" left="20"/>
+    </padding>
+</fx:root>
