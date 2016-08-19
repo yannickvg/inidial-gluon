@@ -1,0 +1,9 @@
+
+
+.phoneListType {
+  -fx-font-weight: bold;
+}
+
+.phoneListNumber {
+  -fx-text-fill: rgba(0, 0, 0, 0.54);
+}

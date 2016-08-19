@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.layout.HBox?>
-<fx:root fx:id="dialog" spacing="10" type="VBox"
+<?import com.gluonhq.charm.glisten.control.CharmListView?>
+<fx:root fx:id="dialog" type="VBox"
          xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
          style="-fx-background-color: white;"
 >
@@ -15,8 +15,6 @@
                     styleClass="contactDetailHeader"/>
             </children>
         </HBox>
+        <CharmListView fx:id="phoneNumbers" />
     </children>
-    <padding>
-        <Insets bottom="10" top="10"/>
-    </padding>
 </fx:root>

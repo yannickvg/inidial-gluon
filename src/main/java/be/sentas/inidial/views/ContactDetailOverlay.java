@@ -1,6 +1,7 @@
 package be.sentas.inidial.views;
 
 import be.sentas.inidial.model.Contact;
+import be.sentas.inidial.model.Phone;
 import be.sentas.inidial.service.StorageService;
 import com.gluonhq.charm.glisten.application.GlassPane;
 import com.gluonhq.charm.glisten.application.MobileApplication;
@@ -65,8 +66,11 @@ public class ContactDetailOverlay extends Layer implements ContactDetailDialog.O
     }
 
     @Override
-    public void onNumberSelected(String number) {
-
+    public void onNumberSelected(Phone phone, Contact contact) {
+        listener.onNumberSelected(phone, contact);
+        MobileApplication.getInstance().getGlassPane().setBackgroundFade(0);
+        MobileApplication.getInstance().getGlassPane().getLayers().remove(overlay);
+        overlay = null;
     }
 
     @Override
@@ -78,8 +82,7 @@ public class ContactDetailOverlay extends Layer implements ContactDetailDialog.O
 
 
     interface OnInteractionListener {
-        void onNumberSelected(String number);
-        void onCancelled();
+        void onNumberSelected(Phone numberm, Contact contact);
     }
 
 

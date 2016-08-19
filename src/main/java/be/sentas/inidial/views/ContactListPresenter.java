@@ -151,7 +151,6 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
 
     @Override
     public void onItemClicked(Contact contact) {
-        //nativeService.callNumber("12345678");s
         ContactDetailOverlay.show(storageService, this, contact);
     }
     
@@ -161,12 +160,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     }*/
 
     @Override
-    public void onNumberSelected(String number) {
-
-    }
-
-    @Override
-    public void onCancelled() {
-
+    public void onNumberSelected(Phone phone, Contact contact) {
+        nativeService.callNumber(phone.getNumber());
     }
 }

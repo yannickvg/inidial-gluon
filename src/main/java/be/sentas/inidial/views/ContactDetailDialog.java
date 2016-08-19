@@ -1,14 +1,18 @@
 package be.sentas.inidial.views;
 
 import be.sentas.inidial.model.Contact;
+import be.sentas.inidial.model.Phone;
 import be.sentas.inidial.model.SettingsConfig;
+import be.sentas.inidial.service.InitialsService;
 import be.sentas.inidial.service.StorageService;
 import com.gluonhq.charm.glisten.application.GlassPane;
 import com.gluonhq.charm.glisten.application.MobileApplication;
+import com.gluonhq.charm.glisten.control.CharmListView;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import com.gluonhq.charm.glisten.visual.Swatch;
 import com.gluonhq.charm.glisten.visual.SwatchElement;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -21,11 +25,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by yannick on 11/08/16.
  */
-public class ContactDetailDialog extends VBox {
+public class ContactDetailDialog extends VBox implements PhoneListCell.OnInteractionListener {
 
     @FXML
     private VBox dialog;
@@ -35,6 +40,9 @@ public class ContactDetailDialog extends VBox {
 
     @FXML
     private Label name;
+
+    @FXML
+    private CharmListView<Phone, String> phoneNumbers;
 
     private StorageService storageService;
 
@@ -65,13 +73,18 @@ public class ContactDetailDialog extends VBox {
         initSettings(storageService);
         handleLocation();
         initHeader();
+        initPhoneNumbers();
+    }
 
+    private void initPhoneNumbers() {
+        phoneNumbers.setCellFactory(param -> new PhoneListCell(this));
+        phoneNumbers.setItems(FXCollections.observableList(contact.getNumbers()));
     }
 
     private void initHeader() {
         name.setText(contact.getDisplayName(settingsConfig.getNameDirection()));
-        Button cancelButton = MaterialDesignIcon.CLEAR.button(e -> hide());
-        HBox.setMargin(cancelButton, new Insets(0, 5, 0, 0));
+        Button cancelButton = MaterialDesignIcon.CLEAR.button(e -> cancel());
+        HBox.setMargin(cancelButton, new Insets(10, 5, 10, 0));
         header.getChildren().add(cancelButton);
         Rectangle divider = new Rectangle();
         divider.setWidth(glassPane.getWidth());
@@ -95,13 +108,8 @@ public class ContactDetailDialog extends VBox {
         this.storageService.retrieveSettingsConfig();
     }
 
-    public void show() {
+    void show() {
         moveDialogUp();
-    }
-
-    public void hide() {
-        moveDialogDown();
-
     }
 
     private void setDialogOffScreen() {
@@ -114,10 +122,24 @@ public class ContactDetailDialog extends VBox {
         transitionUp.play();
     }
 
-    private void moveDialogDown() {
+    private void cancel() {
+        moveDialogDown(null);
+    }
+
+    private void phoneSelected(Phone phone) {
+        moveDialogDown(phone);
+    }
+
+    private void moveDialogDown(Phone phone) {
         TranslateTransition transitionDown = new TranslateTransition(Duration.millis(200), this);
         transitionDown.setByY(glassPane.getHeight()/2);
-        transitionDown.setOnFinished(event -> listener.onCancelled());
+        transitionDown.setOnFinished(event -> {
+            if (phone != null) {
+                listener.onNumberSelected(phone, contact);
+            } else {
+                listener.onCancelled();
+            }
+        });
         transitionDown.play();
     }
 
@@ -125,8 +147,13 @@ public class ContactDetailDialog extends VBox {
         settingsConfig = storageService.settingsConfigProperty().get();
     }
 
+    @Override
+    public void onItemClicked(Phone phone) {
+        phoneSelected(phone);
+    }
+
     interface OnInteractionListener {
-        void onNumberSelected(String number);
+        void onNumberSelected(Phone phone, Contact contact);
         void onCancelled();
     }
 
