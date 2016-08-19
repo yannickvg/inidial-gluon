@@ -25,6 +25,12 @@ public class IosNativeService implements NativeService {
     }
 
     @Override
+    public void sendTextMessage(String number) {
+        String phoneNumberUrl = "sms:" + number;
+        UIApplication.getSharedApplication().openURL(new NSURL(phoneNumberUrl));
+    }
+
+    @Override
     public List<Contact> getContacts() {
         CNContactStore store = new CNContactStore();
 

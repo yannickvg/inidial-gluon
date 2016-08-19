@@ -13,7 +13,12 @@ import java.util.List;
 public class DesktopNativeService implements NativeService {
     @Override
     public void callNumber(String number) {
-        System.out.println("Calling number: " + number);
+        System.out.println("Call " + number);
+    }
+
+    @Override
+    public void sendTextMessage(String number) {
+        System.out.println("Send text message to " + number);
     }
 
     @Override

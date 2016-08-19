@@ -30,6 +30,13 @@ public class AndroidNativeService implements NativeService {
     }
 
     @Override
+    public void sendTextMessage(String number) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("sms:" + number));
+        FXActivity.getInstance().startActivity(intent);
+    }
+
+    @Override
     public List<Contact> getContacts() {
 
         ContentResolver cr = FXActivity.getInstance().getContentResolver();

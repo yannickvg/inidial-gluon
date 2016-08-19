@@ -11,6 +11,8 @@ public interface NativeService {
 
     void callNumber(String number);
 
+    void sendTextMessage(String number);
+
     List<Contact> getContacts();
 
 }
