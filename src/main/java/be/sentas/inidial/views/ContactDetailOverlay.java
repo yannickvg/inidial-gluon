@@ -1,32 +1,25 @@
 package be.sentas.inidial.views;
 
 import be.sentas.inidial.model.Contact;
-import be.sentas.inidial.model.KeyboardConfig;
-import be.sentas.inidial.model.SettingsConfig;
 import be.sentas.inidial.service.StorageService;
 import com.gluonhq.charm.glisten.application.GlassPane;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.layout.Layer;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import javax.inject.Inject;
 import java.io.IOException;
+
+import static com.gluonhq.charm.glisten.application.GlassPane.DEFAULT_BACKGROUND_FADE_LEVEL;
 
 /**
  * Created by yannick on 11/08/16.
  */
-public class ContactDetailOverlay extends Layer {
+public class ContactDetailOverlay extends Layer implements ContactDetailDialog.OnInteractionListener {
+
+    private static ContactDetailOverlay overlay;
 
     private OnInteractionListener listener;
 
@@ -46,30 +39,48 @@ public class ContactDetailOverlay extends Layer {
 
         this.listener = listener;
         this.storageService = storageService;
+        relocateOverlayToCenter();
         showDialog(contact);
     }
 
     private void showDialog(Contact contact) {
-        final ContactDetailDialog dialog = new ContactDetailDialog(storageService, listener, contact);
+        final ContactDetailDialog dialog = new ContactDetailDialog(storageService, this, contact);
         getChildren().add(dialog);
-        TranslateTransition tt = new TranslateTransition(Duration.millis(2000), dialog);
-        tt.setByY(100f);
-        tt.setCycleCount(Timeline.INDEFINITE);
-        tt.setAutoReverse(true);
-        tt.play();
-        relocate();
+        dialog.show();
     }
 
-    private void relocate() {
-        double newX = (MobileApplication.getInstance().getGlassPane().getWidth()) / 2;
+
+    private void relocateOverlayToCenter() {
+        GlassPane glassPane = MobileApplication.getInstance().getGlassPane();
+        double newX = (glassPane.getWidth()) / 2;
         setLayoutX(newX - getLayoutBounds().getMinX());
-        double newY = (MobileApplication.getInstance().getGlassPane().getHeight()) / 2;
+        double newY = glassPane.getHeight() * 0.75;
         setLayoutY(newY - getLayoutBounds().getMinY());
     }
+
+    public static void show(StorageService storageService, OnInteractionListener listener, Contact contact) {
+        overlay = new ContactDetailOverlay(storageService, listener, contact);
+        MobileApplication.getInstance().getGlassPane().setBackgroundFade(DEFAULT_BACKGROUND_FADE_LEVEL);
+        MobileApplication.getInstance().getGlassPane().getLayers().add(overlay);
+    }
+
+    @Override
+    public void onNumberSelected(String number) {
+
+    }
+
+    @Override
+    public void onCancelled() {
+        MobileApplication.getInstance().getGlassPane().setBackgroundFade(0);
+        MobileApplication.getInstance().getGlassPane().getLayers().remove(overlay);
+        overlay = null;
+    }
+
 
     interface OnInteractionListener {
         void onNumberSelected(String number);
         void onCancelled();
     }
+
 
 }

@@ -152,12 +152,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     @Override
     public void onItemClicked(Contact contact) {
         //nativeService.callNumber("12345678");s
-        addGlobalOverlay(new ContactDetailOverlay(storageService, this, contact));
-    }
-
-    private void addGlobalOverlay(Layer layer) {
-        MobileApplication.getInstance().getGlassPane().setBackgroundFade(0.7);
-        MobileApplication.getInstance().getGlassPane().getLayers().add(layer);
+        ContactDetailOverlay.show(storageService, this, contact);
     }
     
     /*@FXML

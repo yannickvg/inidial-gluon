@@ -1,0 +1,7 @@
+
+
+.contactDetailHeader {
+  -fx-padding: 5 0 0 16;
+  -fx-text-fill: rgba(255, 191, 0);
+  -fx-font-size: 18;
+}

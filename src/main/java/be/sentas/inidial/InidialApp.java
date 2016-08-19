@@ -26,6 +26,7 @@ public class InidialApp extends MobileApplication {
         Swatch.AMBER.assignTo(scene);
 
         scene.getStylesheets().add(InidialApp.class.getResource("style.css").toExternalForm());
+        scene.getStylesheets().add(InidialApp.class.getResource("views/contact_detail_dialog.css").toExternalForm());
         ((Stage) scene.getWindow()).getIcons().add(new Image(InidialApp.class.getResourceAsStream("/icon.png")));
     }
 }
