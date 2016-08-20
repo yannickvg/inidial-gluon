@@ -121,6 +121,15 @@ public class InitialsService {
         return getContactsByInitials("");
     }
 
+    public Contact getContact(String id) {
+        for (Contact contact : contacts) {
+            if (contact.getId().equals(id)) {
+                return contact;
+            }
+        }
+        return null;
+    }
+
     public List<Contact> getContactsByInitials(String initials) {
         initials = initials.toLowerCase();
         List<Contact> personsList = new ArrayList<Contact>();

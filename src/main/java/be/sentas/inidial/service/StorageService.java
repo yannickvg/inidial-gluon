@@ -1,33 +1,30 @@
 package be.sentas.inidial.service;
 
 import be.sentas.inidial.model.Contact;
+import be.sentas.inidial.model.MostDialedContactsProvider;
 import be.sentas.inidial.model.SettingsConfig;
 import com.gluonhq.connect.ConnectState;
-import com.gluonhq.connect.GluonObservableList;
 import com.gluonhq.connect.GluonObservableObject;
 import com.gluonhq.connect.gluoncloud.GluonClient;
 import com.gluonhq.connect.gluoncloud.GluonClientBuilder;
 import com.gluonhq.connect.gluoncloud.OperationMode;
-import com.gluonhq.connect.gluoncloud.SyncFlag;
 import com.gluonhq.connect.provider.DataProvider;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * Created by yannick on 14/08/16.
  */
 public class StorageService {
 
-    private static final String CONTACTS = "contacts";
     private static final String SETTINGS_CONFIG = "settingsConfig";
+    private static final String MOST_DIALED_CONTACTS = "mostDialedContacts";
 
-    private final ListProperty<Contact> contacts = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ObjectProperty<SettingsConfig> settingsConfig = new SimpleObjectProperty<>(new SettingsConfig());
+    private final ObjectProperty<MostDialedContactsProvider> mostDialedContacts = new SimpleObjectProperty<>(new MostDialedContactsProvider());
 
     private GluonClient gluonClient;
 
@@ -36,31 +33,6 @@ public class StorageService {
         gluonClient = GluonClientBuilder.create()
                 .operationMode(OperationMode.LOCAL_ONLY)
                 .build();
-    }
-
-    public void retrieveContacts() {
-        GluonObservableList<Contact> gluonContacts = DataProvider.retrieveList(
-                gluonClient.createListDataReader(CONTACTS, Contact.class,
-                        SyncFlag.LIST_WRITE_THROUGH, SyncFlag.OBJECT_WRITE_THROUGH));
-
-        gluonContacts.stateProperty().addListener((obs, ov, nv) -> {
-            if (ConnectState.SUCCEEDED.equals(nv)) {
-                contacts.set(gluonContacts);
-            }
-        });
-    }
-
-    public Contact addContact(Contact contact) {
-        contacts.get().add(contact);
-        return contact;
-    }
-
-    public void removeContact(Contact contact) {
-        contacts.get().remove(contact);
-    }
-
-    public ListProperty<Contact> contactsProperty() {
-        return contacts;
     }
 
     public void retrieveSettingsConfig() {
@@ -80,6 +52,21 @@ public class StorageService {
 
     public ObjectProperty<SettingsConfig> settingsConfigProperty() {
         return settingsConfig;
+    }
+
+    public List<String> retrieveMostDialedContacts() {
+        GluonObservableObject<MostDialedContactsProvider> mostDialedContacts = DataProvider.retrieveObject(
+                gluonClient.createObjectDataReader(MOST_DIALED_CONTACTS, MostDialedContactsProvider.class));
+        return mostDialedContacts.get().getMostDialedContactIds();
+    }
+
+    public void addDialedContact(Contact contact) {
+        GluonObservableObject<MostDialedContactsProvider> mostDialedContactsObservable = DataProvider.retrieveObject(
+                gluonClient.createObjectDataReader(MOST_DIALED_CONTACTS, MostDialedContactsProvider.class));
+        MostDialedContactsProvider mostDialedContacts = mostDialedContactsObservable.get();
+        mostDialedContacts.addDialedContact(contact);
+        DataProvider.storeObject(mostDialedContacts,
+                gluonClient.createObjectDataWriter(MOST_DIALED_CONTACTS, MostDialedContactsProvider.class));
     }
 
 }
