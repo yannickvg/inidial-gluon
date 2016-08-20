@@ -63,7 +63,7 @@ public class IosNativeService implements NativeService {
 
             for (CNGroup group : groupsMatchingPredicate) {
                 NSPredicate predicate = CNContact.getPredicateForContactsInGroup(group.getIdentifier());
-                NSArray<CNContact> iOSContacts = store.getUnifiedContactsMatchingPredicate(predicate, Arrays.asList(CNContactPropertyKey.GivenName, CNContactPropertyKey.MiddleName, CNContactPropertyKey.FamilyName, CNContactPropertyKey.PhoneNumbers,
+                NSArray<CNContact> iOSContacts = store.getUnifiedContactsMatchingPredicate(predicate, Arrays.asList(CNContactPropertyKey.Identifier, CNContactPropertyKey.GivenName, CNContactPropertyKey.MiddleName, CNContactPropertyKey.FamilyName, CNContactPropertyKey.PhoneNumbers,
                         CNContactPropertyKey.ImageDataAvailable, CNContactPropertyKey.ImageData));
                 contacts.addAll(ContactsMapper.map(iOSContacts));
             }
