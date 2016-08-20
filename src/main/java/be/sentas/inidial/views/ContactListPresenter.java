@@ -22,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import org.omg.CORBA.CODESET_INCOMPATIBLE;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -151,7 +152,11 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
 
     @Override
     public void onItemClicked(Contact contact) {
-        ContactDetailOverlay.show(storageService, this, contact);
+        if (settingsConfig.isAutoDial() && contact.hasOnlyOneNumber()) {
+            nativeService.callNumber(contact.getNumbers().get(0).getNumber());
+        } else {
+            ContactDetailOverlay.show(storageService, this, contact);
+        }
     }
     
     /*@FXML

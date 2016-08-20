@@ -80,4 +80,8 @@ public class Contact {
     private boolean isNotBlank(String value) {
         return value != null && !value.trim().equals("");
     }
+
+    public boolean hasOnlyOneNumber() {
+        return getNumbers().size() == 1;
+    }
 }
