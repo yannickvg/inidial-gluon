@@ -1,15 +1,15 @@
 package be.sentas.inidial.views;
 
-import be.sentas.inidial.model.Contact;
-import be.sentas.inidial.model.NameDirection;
 import be.sentas.inidial.model.Phone;
-import com.gluonhq.charm.glisten.control.Avatar;
+import be.sentas.inidial.model.PhoneType;
 import com.gluonhq.charm.glisten.control.CharmListCell;
+import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -17,17 +17,19 @@ import javafx.scene.layout.VBox;
  */
 public class PhoneListCell extends CharmListCell<Phone> {
 
-    private final VBox container;
+    private HBox hContainer;
+    private final VBox vContainer;
     private final Label number;
     private final Label type;
+    private Button textButton;
 
     private OnInteractionListener listener;
 
     public PhoneListCell(OnInteractionListener listener) {
-        container = new VBox();
+        vContainer = new VBox();
         number = new Label();
         type = new Label();
-        container.getChildren().addAll(type, number);
+        vContainer.getChildren().addAll(type, number);
         this.listener = listener;
     }
 
@@ -36,16 +38,25 @@ public class PhoneListCell extends CharmListCell<Phone> {
     public void updateItem(Phone item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null && !empty) {
-            container.setAlignment(Pos.CENTER_LEFT);
+            vContainer.setAlignment(Pos.CENTER_LEFT);
             type.setText(item.getType().name());
             type.getStyleClass().add("phoneListType");
             type.setPadding(new Insets(0,16,0,16));
             number.setText(item.getNumber());
             number.setPadding(new Insets(0,16,0,16));
             number.getStyleClass().add("phoneListNumber");
-            setGraphic(container);
+            if (item.getType() == PhoneType.MOBILE) {
+                textButton = MaterialDesignIcon.TEXTSMS.button(e -> listener.onTextNumber(item));
+                hContainer = new HBox();
+                vContainer.setMaxWidth(Double.MAX_VALUE);
+                HBox.setHgrow(vContainer, Priority.ALWAYS);
+                hContainer.getChildren().addAll(vContainer, textButton);
+                setGraphic(hContainer);
+            } else {
+                setGraphic(vContainer);
+            }
             if (this.listener != null) {
-                container.setOnMouseClicked(event -> listener.onItemClicked(item));
+                vContainer.setOnMouseClicked(event -> listener.onCallNumber(item));
             }
         } else {
             setGraphic(null);
@@ -53,7 +64,8 @@ public class PhoneListCell extends CharmListCell<Phone> {
     }
 
     public interface OnInteractionListener {
-        void onItemClicked(Phone item);
+        void onCallNumber(Phone item);
+        void onTextNumber(Phone item);
     }
 
 }

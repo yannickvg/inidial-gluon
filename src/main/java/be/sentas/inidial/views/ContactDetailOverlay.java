@@ -66,8 +66,16 @@ public class ContactDetailOverlay extends Layer implements ContactDetailDialog.O
     }
 
     @Override
-    public void onNumberSelected(Phone phone, Contact contact) {
-        listener.onNumberSelected(phone, contact);
+    public void onCallNumber(Phone phone, Contact contact) {
+        listener.onCallNumber(phone, contact);
+        MobileApplication.getInstance().getGlassPane().setBackgroundFade(0);
+        MobileApplication.getInstance().getGlassPane().getLayers().remove(overlay);
+        overlay = null;
+    }
+
+    @Override
+    public void onTextNumber(Phone phone, Contact contact) {
+        listener.onTextNumber(phone, contact);
         MobileApplication.getInstance().getGlassPane().setBackgroundFade(0);
         MobileApplication.getInstance().getGlassPane().getLayers().remove(overlay);
         overlay = null;
@@ -82,7 +90,8 @@ public class ContactDetailOverlay extends Layer implements ContactDetailDialog.O
 
 
     interface OnInteractionListener {
-        void onNumberSelected(Phone numberm, Contact contact);
+        void onCallNumber(Phone phone, Contact contact);
+        void onTextNumber(Phone phone, Contact contact);
     }
 
 

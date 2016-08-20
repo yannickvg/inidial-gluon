@@ -160,7 +160,12 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     }*/
 
     @Override
-    public void onNumberSelected(Phone phone, Contact contact) {
+    public void onCallNumber(Phone phone, Contact contact) {
         nativeService.callNumber(phone.getNumber());
+    }
+
+    @Override
+    public void onTextNumber(Phone phone, Contact contact) {
+        nativeService.sendTextMessage(phone.getNumber());
     }
 }

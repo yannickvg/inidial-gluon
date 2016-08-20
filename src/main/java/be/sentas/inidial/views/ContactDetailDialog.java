@@ -3,7 +3,6 @@ package be.sentas.inidial.views;
 import be.sentas.inidial.model.Contact;
 import be.sentas.inidial.model.Phone;
 import be.sentas.inidial.model.SettingsConfig;
-import be.sentas.inidial.service.InitialsService;
 import be.sentas.inidial.service.StorageService;
 import com.gluonhq.charm.glisten.application.GlassPane;
 import com.gluonhq.charm.glisten.application.MobileApplication;
@@ -20,12 +19,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Created by yannick on 11/08/16.
@@ -112,6 +111,22 @@ public class ContactDetailDialog extends VBox implements PhoneListCell.OnInterac
         moveDialogUp();
     }
 
+    private void updateSettings() {
+        settingsConfig = storageService.settingsConfigProperty().get();
+    }
+
+    @Override
+    public void onCallNumber(Phone item) {
+        Consumer<Phone> onCall = (phone) -> listener.onCallNumber(phone, contact);
+        moveDialogDown(item, onCall);
+    }
+
+    @Override
+    public void onTextNumber(Phone item) {
+        Consumer<Phone> onText = (phone) -> listener.onTextNumber(phone, contact);
+        moveDialogDown(item, onText);
+    }
+
     private void setDialogOffScreen() {
         setTranslateY(glassPane.getHeight()/2);
     }
@@ -123,19 +138,15 @@ public class ContactDetailDialog extends VBox implements PhoneListCell.OnInterac
     }
 
     private void cancel() {
-        moveDialogDown(null);
+        moveDialogDown(null, null);
     }
 
-    private void phoneSelected(Phone phone) {
-        moveDialogDown(phone);
-    }
-
-    private void moveDialogDown(Phone phone) {
+    private void moveDialogDown(Phone phone, Consumer<Phone> doAction) {
         TranslateTransition transitionDown = new TranslateTransition(Duration.millis(200), this);
         transitionDown.setByY(glassPane.getHeight()/2);
         transitionDown.setOnFinished(event -> {
             if (phone != null) {
-                listener.onNumberSelected(phone, contact);
+                doAction.accept(phone);
             } else {
                 listener.onCancelled();
             }
@@ -143,17 +154,9 @@ public class ContactDetailDialog extends VBox implements PhoneListCell.OnInterac
         transitionDown.play();
     }
 
-    private void updateSettings() {
-        settingsConfig = storageService.settingsConfigProperty().get();
-    }
-
-    @Override
-    public void onItemClicked(Phone phone) {
-        phoneSelected(phone);
-    }
-
     interface OnInteractionListener {
-        void onNumberSelected(Phone phone, Contact contact);
+        void onCallNumber(Phone phone, Contact contact);
+        void onTextNumber(Phone phone, Contact contact);
         void onCancelled();
     }
 
