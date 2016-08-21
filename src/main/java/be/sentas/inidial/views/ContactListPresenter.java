@@ -20,6 +20,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import org.omg.CORBA.CODESET_INCOMPATIBLE;
@@ -53,6 +54,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     private SettingsConfig settingsConfig;
 
     final NativeService nativeService = NativePlatformFactory.getPlatform().getNativeService();
+    private Button clearButton;
 
     public void initialize() {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
@@ -60,7 +62,9 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
                 initAppBar();
                 initScreenContent();
                 storageService.settingsConfigProperty().addListener((observable, oldValue1, newValue1) -> {
-                    initScreenContent();
+                    if (!oldValue1.equals(newValue1)) {
+                        initScreenContent();
+                    }
                 });
                 storageService.retrieveSettingsConfig();
             }
@@ -73,6 +77,21 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
         initContacts();
         initKeyboard();
         initHeader();
+        showMostDialedContacts();
+    }
+
+    private void showMostDialedContacts() {
+        initials.setText("Most Dialed Contacts");
+        List<String> identifiers = MostDialedContactsProvider.getInstance().getMostDialedContactIds();
+        if (identifiers.isEmpty()) {
+            updateList(FXCollections.observableArrayList());
+        } else {
+            List<Contact> contacts = new ArrayList<>();
+            for (String id: identifiers) {
+                contacts.add(InitialsService.getService(settingsConfig.getNameDirection()).getContact(id));
+            }
+            updateList(FXCollections.observableList(contacts));
+        }
     }
 
     private void updateSettings() {
@@ -96,7 +115,8 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
         AppBar appBar = MobileApplication.getInstance().getAppBar();
         if (!newValue.equals("")) {
             if (oldValue.equals("")) {
-                appBar.getActionItems().add(0, MaterialDesignIcon.CLEAR.button(e -> clearSearch()));
+                clearButton = MaterialDesignIcon.CLEAR.button(e -> clearSearch());
+                appBar.getActionItems().add(0, clearButton);
             }
         } else {
             appBar.getActionItems().remove(0);
@@ -106,10 +126,8 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     }
 
     private void initContacts() {
-        List<Contact> contacts = nativeService.getContacts();
-        InitialsService.initService(settingsConfig.getNameDirection(), contacts);
+        InitialsService.initService(settingsConfig.getNameDirection(), nativeService.getContacts());
         contactList.setCellFactory(param -> new ContactListCell(settingsConfig.getNameDirection(), this));
-        updateList(FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContacts()));
     }
 
     private void initKeyboard() {
@@ -128,8 +146,12 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     private void clearSearch() {
         searchedInitials.setValue("");
         keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(settingsConfig.getNameDirection()).getAvailableInitials())));
-        updateList(FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContacts()));
         numberOfMatches.setText("");
+        showMostDialedContacts();
+        if (clearButton != null) {
+            MobileApplication.getInstance().getAppBar().getActionItems().remove(clearButton);
+            clearButton = null;
+        }
     }
 
     @Override
@@ -153,7 +175,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     @Override
     public void onItemClicked(Contact contact) {
         if (settingsConfig.isAutoDial() && contact.hasOnlyOneNumber()) {
-            nativeService.callNumber(contact.getNumbers().get(0).getNumber());
+            onCallNumber(contact.getNumbers().get(0), contact);
         } else {
             ContactDetailOverlay.show(storageService, this, contact);
         }
@@ -166,11 +188,15 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
 
     @Override
     public void onCallNumber(Phone phone, Contact contact) {
+        MostDialedContactsProvider.getInstance().addDialedContact(contact);
         nativeService.callNumber(phone.getNumber());
+        clearSearch();
     }
 
     @Override
     public void onTextNumber(Phone phone, Contact contact) {
+        MostDialedContactsProvider.getInstance().addDialedContact(contact);
         nativeService.sendTextMessage(phone.getNumber());
+        clearSearch();
     }
 }

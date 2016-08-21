@@ -1,5 +1,10 @@
 package be.sentas.inidial.model;
 
+import com.gluonhq.charm.down.common.PlatformFactory;
+import com.gluonhq.charm.down.common.SettingService;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,16 +15,40 @@ import java.util.List;
  */
 public class MostDialedContactsProvider {
 
-    private List<DialedContact> contactsWithDials = new ArrayList<>();
+    public static final String CONTACTS_KEY = "contacts";
+    private static MostDialedContactsProvider instance;
+
+    private MostDialedContactsProvider() {
+        service = PlatformFactory.getPlatform().getSettingService();
+        contactsWithDials = new Gson().fromJson(service.retrieve(CONTACTS_KEY), new TypeToken<ArrayList<DialedContact>>(){}.getType());
+        if (contactsWithDials == null) {
+            contactsWithDials = new ArrayList<>();
+        }
+    }
+
+    public static MostDialedContactsProvider getInstance() {
+        if (instance == null) {
+            instance = new MostDialedContactsProvider();
+        }
+        return instance;
+    }
+
+    private List<DialedContact> contactsWithDials;
+    private SettingService service;
 
     public void addDialedContact(Contact contact) {
+        boolean exists = false;
         for (DialedContact dialedContact : contactsWithDials) {
             if (dialedContact.getContactId().equals(contact.getId())) {
                 dialedContact.increaseDialCount();
-                return;
+                exists = true;
+                break;
             }
         }
-        contactsWithDials.add(new DialedContact(contact.getId()));
+        if (!exists) {
+            contactsWithDials.add(new DialedContact(contact.getId()));
+        }
+        service.store(CONTACTS_KEY, new Gson().toJson(contactsWithDials));
     }
 
     public List<String> getMostDialedContactIds() {
@@ -35,5 +64,5 @@ public class MostDialedContactsProvider {
         contactsWithDials = new ArrayList<>();
     }
 
-    private Comparator<DialedContact> sorter = (o1, o2) -> o1.getDialCount().compareTo(o2.getDialCount());
+    private Comparator<DialedContact> sorter = (o1, o2) -> o2.getDialCount().compareTo(o1.getDialCount());
 }

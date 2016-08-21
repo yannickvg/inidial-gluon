@@ -84,4 +84,25 @@ public class SettingsConfig {
 
     };
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SettingsConfig that = (SettingsConfig) o;
+
+        if (!autoDial.getValue().equals(that.autoDial.getValue())) return false;
+        if (!keyboardLayout.getValue().equals(that.keyboardLayout.getValue())) return false;
+        return nameDirection.getValue().equals(that.nameDirection.getValue());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = autoDial.hashCode();
+        result = 31 * result + keyboardLayout.hashCode();
+        result = 31 * result + nameDirection.hashCode();
+        return result;
+    }
+
 }
