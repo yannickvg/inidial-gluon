@@ -88,17 +88,25 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
         List<String> identifiers = MostDialedContactsProvider.getInstance().getMostDialedContactIds();
         if (identifiers.isEmpty()) {
             updateList(FXCollections.observableArrayList());
-            contactList.setVisible(false);
-            emptyView.setVisible(true);
+            showEmptyView();
         } else {
             List<Contact> contacts = new ArrayList<>();
             for (String id: identifiers) {
                 contacts.add(InitialsService.getService(settingsConfig.getNameDirection()).getContact(id));
             }
             updateList(FXCollections.observableList(contacts));
-            contactList.setVisible(true);
-            emptyView.setVisible(false);
+            showContactList();
         }
+    }
+
+    private void showContactList() {
+        contactList.setVisible(true);
+        emptyView.setVisible(false);
+    }
+
+    private void showEmptyView() {
+        contactList.setVisible(false);
+        emptyView.setVisible(true);
     }
 
     private void updateSettings() {
@@ -167,6 +175,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
         keyboard.load(KeyboardConfig.getConfig(settingsConfig.getKeyboardLayout(), toStringList(InitialsService.getService(settingsConfig.getNameDirection()).getNextCharacters(searchedInitials.getValue()))));
         ObservableList<Contact> contacts = FXCollections.observableList(InitialsService.getService(settingsConfig.getNameDirection()).getContactsByInitials(searchedInitials.getValue()));
         updateList(contacts);
+        showContactList();
         if (contacts.size() == 1) {
             numberOfMatches.setText("1 match");
         } else {
