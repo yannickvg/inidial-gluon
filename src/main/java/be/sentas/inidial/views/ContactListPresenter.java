@@ -187,11 +187,6 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
             ContactDetailOverlay.show(storageService, this, contact);
         }
     }
-    
-    /*@FXML
-    void buttonClick() {
-        label.setText("Hello JavaFX Universe!");
-    }*/
 
     @Override
     public void onCallNumber(Phone phone, Contact contact) {

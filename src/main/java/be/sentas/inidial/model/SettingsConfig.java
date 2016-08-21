@@ -2,8 +2,6 @@ package be.sentas.inidial.model;
 
 import javafx.beans.property.*;
 
-import javax.lang.model.element.Name;
-
 /**
  * Created by yannick on 14/08/16.
  */
@@ -57,7 +55,7 @@ public class SettingsConfig {
     /*
         NAME DIRECTION
      */
-    private final ObjectProperty<NameDirection> nameDirection = new SimpleObjectProperty<NameDirection>(this, "nameDirection", NameDirection.FIRSTLAST) {
+    private final ObjectProperty<NameDirection> nameDirection = new SimpleObjectProperty<NameDirection>(this, "nameDirection", NameDirection.FIRST_LAST) {
         @Override
         protected void invalidated() {
             nameDirectionOrdinal.set(get().ordinal());
@@ -76,7 +74,7 @@ public class SettingsConfig {
         nameDirection.set(value);
     }
 
-    private final IntegerProperty nameDirectionOrdinal = new SimpleIntegerProperty(this, "nameDirectionOrdinal", NameDirection.FIRSTLAST.ordinal()) {
+    private final IntegerProperty nameDirectionOrdinal = new SimpleIntegerProperty(this, "nameDirectionOrdinal", NameDirection.FIRST_LAST.ordinal()) {
         @Override
         protected void invalidated() {
             setNameDirection(NameDirection.values()[get()]);

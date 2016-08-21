@@ -60,7 +60,7 @@ public class Contact {
 
 
     public String getDisplayName(NameDirection direction) {
-        if(NameDirection.FIRSTLAST.equals(direction)) {
+        if(NameDirection.FIRST_LAST.equals(direction)) {
             StringBuilder sb = new StringBuilder();
             sb.append(isNotBlank(firstName) ? firstName : "");
             sb.append(isNotBlank(lastName) ? " " + lastName : "");
@@ -74,7 +74,7 @@ public class Contact {
     }
 
     public boolean hasName() {
-        return Utils.isNotBlank(getDisplayName(NameDirection.FIRSTLAST));
+        return Utils.isNotBlank(getDisplayName(NameDirection.FIRST_LAST));
     }
 
     private boolean isNotBlank(String value) {

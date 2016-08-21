@@ -62,6 +62,7 @@ public class MostDialedContactsProvider {
 
     public void clear() {
         contactsWithDials = new ArrayList<>();
+        service.store(CONTACTS_KEY, new Gson().toJson(contactsWithDials));
     }
 
     private Comparator<DialedContact> sorter = (o1, o2) -> o2.getDialCount().compareTo(o1.getDialCount());
