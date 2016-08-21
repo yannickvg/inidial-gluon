@@ -38,6 +38,9 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     private CharmListView<Contact, String> contactList;
 
     @FXML
+    private Label emptyView;
+
+    @FXML
     private Keyboard keyboard;
 
     @FXML
@@ -85,12 +88,16 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
         List<String> identifiers = MostDialedContactsProvider.getInstance().getMostDialedContactIds();
         if (identifiers.isEmpty()) {
             updateList(FXCollections.observableArrayList());
+            contactList.setVisible(false);
+            emptyView.setVisible(true);
         } else {
             List<Contact> contacts = new ArrayList<>();
             for (String id: identifiers) {
                 contacts.add(InitialsService.getService(settingsConfig.getNameDirection()).getContact(id));
             }
             updateList(FXCollections.observableList(contacts));
+            contactList.setVisible(true);
+            emptyView.setVisible(false);
         }
     }
 

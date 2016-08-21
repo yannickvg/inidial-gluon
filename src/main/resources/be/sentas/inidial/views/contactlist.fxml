@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
 <View fx:id="mainView" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="be.sentas.inidial.views.ContactListPresenter">
     <center>
@@ -20,7 +22,16 @@
                                styleClass="rightListHeader"/>
                     </children>
                 </HBox>
-                <CharmListView fx:id="contactList" />
+                <StackPane >
+                    <CharmListView fx:id="contactList" />
+                    <Label fx:id="emptyView" VBox.vgrow="ALWAYS" maxHeight="Infinity" textAlignment="CENTER" alignment="CENTER"
+                           text="Once you start dialing people, your most popular ones will be right here"
+                           visible="false" wrapText="true" >
+                        <StackPane.margin>
+                            <Insets left="30" right="30" />
+                        </StackPane.margin>
+                    </Label>
+                </StackPane>
                 <Keyboard fx:id="keyboard"/>
             </children>
         </VBox>
