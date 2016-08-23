@@ -13,6 +13,7 @@ public class InitialsService {
     private static InitialsService service;
 
     private List<Contact> contacts;
+
     private Map<String, List<Contact>> contactsMap;
     private InitialsMap initialsMap;
 
@@ -28,15 +29,13 @@ public class InitialsService {
         fillCombined(direction);
     }
 
-    private InitialsService(NameDirection direction, List<Contact> contacts) {
+    private InitialsService(List<Contact> contacts) {
         this.contacts = contacts;
-        this.direction = direction;
-        fillCombined(direction);
     }
 
     public static InitialsService getService(NameDirection direction) {
-        if (service == null) {
-            throw new IllegalStateException("Service not initialized, call initService first");
+        if (service == null || service.initialsMap == null) {
+            throw new IllegalStateException("Service not initialized, call createService and initService first");
         }
         if (!service.getDirection().equals(direction)) {
             service.fillCombined(direction);
@@ -44,8 +43,15 @@ public class InitialsService {
         return service;
     }
 
-    public static InitialsService initService(NameDirection direction, List<Contact> contacts) {
-        service = new InitialsService(direction, contacts);
+    public static void createService(List<Contact> contacts) {
+        service = new InitialsService(contacts);
+    }
+
+    public static InitialsService initService(NameDirection direction) {
+        if (service == null) {
+            throw new IllegalStateException("Service not created, call createService first");
+        }
+        service.fillCombined(direction);
         return service;
     }
 
@@ -54,6 +60,7 @@ public class InitialsService {
     }
 
     private void fillCombined(NameDirection direction) {
+        this.direction = direction;
         initialsMap = new InitialsMap();
         contactsMap = new HashMap<>();
         for (Contact person : contacts) {

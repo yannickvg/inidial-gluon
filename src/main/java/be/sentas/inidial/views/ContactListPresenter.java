@@ -141,7 +141,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     }
 
     private void initContacts() {
-        InitialsService.initService(settingsConfig.getNameDirection(), nativeService.getContacts());
+        InitialsService.initService(settingsConfig.getNameDirection());
         contactList.setCellFactory(param -> new ContactListCell(settingsConfig.getNameDirection(), this));
     }
 
