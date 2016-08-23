@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.mvc.View?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<View fx:id="splash" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.sentas.inidial.views.SplashPresenter">
+   <center>
+      <VBox fx:id="container">
+         <children>
+            <Label VBox.vgrow="ALWAYS" maxHeight="Infinity" maxWidth="Infinity" textAlignment="CENTER" alignment="CENTER"
+            text="Loading...">
+            </Label>
+         </children>
+      </VBox>
+   </center>
+</View>
