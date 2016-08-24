@@ -25,7 +25,7 @@ public class InidialApp extends MobileApplication {
 
     @Override
     public void postInit(Scene scene) {
-        Swatch.AMBER.assignTo(scene);
+        Swatch.BLUE.assignTo(scene);
 
         scene.getStylesheets().add(InidialApp.class.getResource("style.css").toExternalForm());
         scene.getStylesheets().add(InidialApp.class.getResource("views/contact_detail_dialog.css").toExternalForm());

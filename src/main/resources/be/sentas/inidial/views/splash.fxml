@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.gluonhq.charm.glisten.mvc.View?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <View fx:id="splash" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.sentas.inidial.views.SplashPresenter">
    <center>
-      <VBox fx:id="container">
+      <StackPane fx:id="container" style="-fx-background-color:#2284c5">
          <children>
-            <Label VBox.vgrow="ALWAYS" maxHeight="Infinity" maxWidth="Infinity" textAlignment="CENTER" alignment="CENTER"
-            text="Loading...">
-            </Label>
+            <ImageView fitWidth="140" fitHeight="140">
+               <image>
+                  <Image url="logo_large.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="stripes" fitWidth="140" fitHeight="140" >
+               <image>
+                  <Image url="stripes_circle.png" />
+               </image>
+            </ImageView>
          </children>
-      </VBox>
+      </StackPane>
    </center>
 </View>
