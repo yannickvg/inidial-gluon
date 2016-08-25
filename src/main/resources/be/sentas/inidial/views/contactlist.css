@@ -2,7 +2,7 @@
 
 .leftListHeader {
   -fx-padding: 20 16 20 16;
-  -fx-text-fill: rgba(255, 191, 0);
+  -fx-text-fill: #2284c5;
 }
 
 .rightListHeader {

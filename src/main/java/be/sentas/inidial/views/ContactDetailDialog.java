@@ -88,7 +88,7 @@ public class ContactDetailDialog extends VBox implements PhoneListCell.OnInterac
         Rectangle divider = new Rectangle();
         divider.setWidth(glassPane.getWidth());
         divider.setHeight(1);
-        divider.setFill(Swatch.AMBER.getColor(SwatchElement.PRIMARY_500));
+        divider.setFill(Swatch.BLUE.getColor(SwatchElement.PRIMARY_500));
         dialog.getChildren().add(1, divider);
     }
 
