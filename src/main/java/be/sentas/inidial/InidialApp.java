@@ -30,6 +30,6 @@ public class InidialApp extends MobileApplication {
         scene.getStylesheets().add(InidialApp.class.getResource("style.css").toExternalForm());
         scene.getStylesheets().add(InidialApp.class.getResource("views/contact_detail_dialog.css").toExternalForm());
         scene.getStylesheets().add(InidialApp.class.getResource("views/phone_list_item.css").toExternalForm());
-        ((Stage) scene.getWindow()).getIcons().add(new Image(InidialApp.class.getResourceAsStream("/icon.png")));
+        ((Stage) scene.getWindow()).getIcons().add(new Image(InidialApp.class.getResourceAsStream("/logo_large.png")));
     }
 }
