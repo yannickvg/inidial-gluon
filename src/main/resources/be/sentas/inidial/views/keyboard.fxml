@@ -11,7 +11,7 @@
         <HBox fx:id="firstRow" spacing="7" />
         <HBox fx:id="secondRow" spacing="7">
             <padding>
-                <Insets bottom="0" top="0" right="10" left="10" />
+                <Insets bottom="0" top="0" right="7" left="7" />
             </padding>
         </HBox>
         <HBox fx:id="thirdRow" spacing="7">

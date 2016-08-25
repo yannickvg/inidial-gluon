@@ -3,6 +3,7 @@ package be.sentas.inidial.views;
 import be.sentas.inidial.model.KeyboardConfig;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -60,12 +61,13 @@ public class Keyboard extends VBox {
 
     private void addSmallButton(HBox row, KeyboardConfig.Key key) {
         Button button = new Button(key.getSymbol());
-        button.setStyle("-fx-min-width: 0; -fx-font-family: Monaco");
+        button.setStyle("-fx-min-width: 0; -fx-font-family: Monaco; -fx-font-size:11");
         HBox.setHgrow(button, Priority.ALWAYS);
         button.setMaxWidth(Double.MAX_VALUE);
         button.setPrefHeight(40);
         button.setDisable(!key.isEnabled());
         button.setOnAction(event -> listener.onKeyPressed(key.getSymbol()));
+        button.setPadding(Insets.EMPTY);
         row.getChildren().add(button);
     }
 
