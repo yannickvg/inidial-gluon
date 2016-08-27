@@ -1,5 +1,7 @@
 package be.sentas.inidial.views;
 
+import be.sentas.inidial.device.Logger;
+import be.sentas.inidial.device.NativeService;
 import be.sentas.inidial.model.Contact;
 import be.sentas.inidial.model.NameDirection;
 import com.gluonhq.charm.glisten.control.Avatar;
@@ -11,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+
+import java.io.ByteArrayInputStream;
 
 /**
  * Created by yannick on 11/08/16.
@@ -25,8 +29,11 @@ public class ContactListCell extends CharmListCell<Contact> {
 
     private OnInteractionListener listener;
 
-    public ContactListCell(NameDirection direction, OnInteractionListener listener) {
+    private NativeService nativeService;
+
+    public ContactListCell(NameDirection direction, OnInteractionListener listener, NativeService nativeService) {
         this.direction = direction;
+        this.nativeService = nativeService;
         container = new HBox();
         avatar = new Avatar();
         name = new Label();
@@ -40,10 +47,17 @@ public class ContactListCell extends CharmListCell<Contact> {
         super.updateItem(item, empty);
         if (item != null && !empty) {
             name.setText(item.getDisplayName(direction));
-            final Image image = new Image("picture.jpg");
-            if (image != null) {
-                avatar.setImage(image);
+            Image image;
+            byte[] contactPictureBytes = nativeService.getContactPicture(item.getId());
+            if (contactPictureBytes != null) {
+                Logger.d("bytes are not null");
+                image = new Image(new ByteArrayInputStream(contactPictureBytes));
+
+            } else {
+                Logger.d("bytes are null");
+                image = new Image("contact.png");
             }
+            avatar.setImage(image);
             container.setAlignment(Pos.CENTER_LEFT);
             name.setPadding(new Insets(0,16,0,16));
             setGraphic(container);

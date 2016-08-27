@@ -46,4 +46,9 @@ public class DesktopNativeService implements NativeService {
         contacts.add(herman);
         return contacts;
     }
+
+    @Override
+    public byte[] getContactPicture(String contactId) {
+        return null;
+    }
 }

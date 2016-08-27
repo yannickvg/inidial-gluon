@@ -1,17 +1,24 @@
 package be.sentas.inidial.device;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.util.Log;
 import be.sentas.inidial.Utils;
 import be.sentas.inidial.model.Contact;
 import be.sentas.inidial.model.Phone;
 import be.sentas.inidial.model.PhoneType;
 import javafxports.android.FXActivity;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -21,6 +28,8 @@ import java.util.Set;
  * Created by yannick on 15/08/16.
  */
 public class AndroidNativeService implements NativeService {
+
+    private static final String TAG = "InidialGluon";
 
     @Override
     public void callNumber(String number) {
@@ -131,5 +140,23 @@ public class AndroidNativeService implements NativeService {
             c.setLastName(displayName);
         }
         nameCur.close();
+    }
+
+    public byte[] getContactPicture(String contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
+                Long.valueOf(contactId));
+        return convertImageToByte(contactUri);
+    }
+
+    public byte[] convertImageToByte(Uri uri){
+        InputStream inputStream = ContactsContract.Contacts
+                .openContactPhotoInputStream(FXActivity.getInstance().getContentResolver(), uri, true);
+        if (inputStream != null) {
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            return baos.toByteArray();
+        }
+        return null;
     }
 }

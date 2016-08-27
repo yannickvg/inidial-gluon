@@ -18,6 +18,8 @@ public class Contact {
 
     private List<Phone> numbers = new ArrayList<>();
 
+    private String image;
+
     public Contact() {
     }
 
@@ -58,6 +60,13 @@ public class Contact {
         this.numbers = numbers;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getDisplayName(NameDirection direction) {
         if(NameDirection.FIRST_LAST.equals(direction)) {

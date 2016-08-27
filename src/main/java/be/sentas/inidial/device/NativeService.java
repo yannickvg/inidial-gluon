@@ -15,4 +15,6 @@ public interface NativeService {
 
     List<Contact> getContacts();
 
+    byte[] getContactPicture(String contactId);
+
 }

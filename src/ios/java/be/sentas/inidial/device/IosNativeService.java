@@ -54,6 +54,11 @@ public class IosNativeService implements NativeService {
         return new ArrayList<>();
     }
 
+    @Override
+    public byte[] getContactPicture(String contactId) {
+        return null;
+    }
+
     private List<Contact> retrieveContactsWithStore(CNContactStore store) {
 
         List<Contact> contacts = new ArrayList<>();
