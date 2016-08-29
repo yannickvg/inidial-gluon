@@ -18,7 +18,7 @@ public class Contact {
 
     private List<Phone> numbers = new ArrayList<>();
 
-    private String image;
+    private boolean hasImageData;
 
     public Contact() {
     }
@@ -60,14 +60,6 @@ public class Contact {
         this.numbers = numbers;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     public String getDisplayName(NameDirection direction) {
         if(NameDirection.FIRST_LAST.equals(direction)) {
             StringBuilder sb = new StringBuilder();
@@ -92,5 +84,13 @@ public class Contact {
 
     public boolean hasOnlyOneNumber() {
         return getNumbers().size() == 1;
+    }
+
+    public boolean hasImageData() {
+        return hasImageData;
+    }
+
+    public void setHasImageData(boolean hasImageData) {
+        this.hasImageData = hasImageData;
     }
 }

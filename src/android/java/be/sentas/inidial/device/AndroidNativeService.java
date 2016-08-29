@@ -62,6 +62,7 @@ public class AndroidNativeService implements NativeService {
                 id = cur.getString(0);
                 c.setId(id);
                 fillNameDetails(id, c, cur.getString(1), cr);
+                c.setHasImageData(true);
                 if (Integer
                         .parseInt(cur.getString(2)) > 0 && c.hasName()) {
                     contacts.add(c);

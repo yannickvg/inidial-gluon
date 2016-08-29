@@ -6,7 +6,6 @@ import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSErrorException;
 import org.robovm.apple.foundation.NSPredicate;
 import org.robovm.apple.foundation.NSURL;
-import org.robovm.apple.uikit.UIAlertView;
 import org.robovm.apple.uikit.UIApplication;
 
 import java.util.ArrayList;
@@ -56,6 +55,18 @@ public class IosNativeService implements NativeService {
 
     @Override
     public byte[] getContactPicture(String contactId) {
+        CNContactStore store = new CNContactStore();
+        List<String> identifiers = new ArrayList<>();
+        identifiers.add(contactId);
+        NSPredicate predicate = CNContact.getPredicateForContacts(identifiers);
+        try {
+            NSArray<CNContact> iOSContacts = store.getUnifiedContactsMatchingPredicate(predicate, Arrays.asList(CNContactPropertyKey.ImageData));
+            if (iOSContacts.size() == 1) {
+                return iOSContacts.get(0).getImageData().getBytes();
+            }
+        } catch (NSErrorException e) {
+            //TODO errorhandling
+        }
         return null;
     }
 

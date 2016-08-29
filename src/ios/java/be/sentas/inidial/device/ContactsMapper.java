@@ -41,6 +41,7 @@ public class ContactsMapper {
                 type = PhoneType.OTHER;
             }
             contact.getNumbers().add(new Phone(phoneNumber.getValue().getStringValue(), type));
+            contact.setHasImageData(iOSContact.isImageDataAvailable());
         }
         return contact;
     }
