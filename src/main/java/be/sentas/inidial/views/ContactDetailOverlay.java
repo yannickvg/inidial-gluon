@@ -65,33 +65,39 @@ public class ContactDetailOverlay extends Layer implements ContactDetailDialog.O
         MobileApplication.getInstance().getGlassPane().getLayers().add(overlay);
     }
 
+    public static void close() {
+        overlay.closeDialog();
+    }
+
     @Override
     public void onCallNumber(Phone phone, Contact contact) {
         listener.onCallNumber(phone, contact);
-        MobileApplication.getInstance().getGlassPane().setBackgroundFade(0);
-        MobileApplication.getInstance().getGlassPane().getLayers().remove(overlay);
-        overlay = null;
+        closeDialog();
     }
 
     @Override
     public void onTextNumber(Phone phone, Contact contact) {
         listener.onTextNumber(phone, contact);
-        MobileApplication.getInstance().getGlassPane().setBackgroundFade(0);
-        MobileApplication.getInstance().getGlassPane().getLayers().remove(overlay);
-        overlay = null;
+        closeDialog();
     }
+
 
     @Override
     public void onCancelled() {
+        listener.onCancelled();
+        closeDialog();
+    }
+
+    private void closeDialog() {
         MobileApplication.getInstance().getGlassPane().setBackgroundFade(0);
         MobileApplication.getInstance().getGlassPane().getLayers().remove(overlay);
         overlay = null;
     }
-
 
     interface OnInteractionListener {
         void onCallNumber(Phone phone, Contact contact);
         void onTextNumber(Phone phone, Contact contact);
+        void onCancelled();
     }
 
 

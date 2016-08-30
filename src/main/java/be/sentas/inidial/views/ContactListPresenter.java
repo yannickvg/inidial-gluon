@@ -1,29 +1,25 @@
 package be.sentas.inidial.views;
 
+import be.sentas.inidial.InidialApp;
+import be.sentas.inidial.device.Logger;
 import be.sentas.inidial.device.NativePlatformFactory;
 import be.sentas.inidial.device.NativeService;
 import be.sentas.inidial.model.*;
 import be.sentas.inidial.service.InitialsService;
 import be.sentas.inidial.service.StorageService;
-import com.gluonhq.charm.glisten.application.GlassPane;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.CharmListView;
-import com.gluonhq.charm.glisten.layout.Layer;
-import com.gluonhq.charm.glisten.layout.MobileLayoutPane;
+import com.gluonhq.charm.glisten.control.LifecycleEvent;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
-import be.sentas.inidial.InidialApp;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.util.Duration;
-import org.omg.CORBA.CODESET_INCOMPATIBLE;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -58,6 +54,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
 
     final NativeService nativeService = NativePlatformFactory.getPlatform().getNativeService();
     private Button clearButton;
+    private boolean contactDetailOverlayVisible;
 
     public void initialize() {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
@@ -70,6 +67,18 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
                     }
                 });
                 storageService.retrieveSettingsConfig();
+            }
+        });
+        mainView.setOnCloseRequest(new EventHandler<LifecycleEvent>() {
+            @Override
+            public void handle(LifecycleEvent event) {
+                if (contactDetailOverlayVisible) {
+                    ContactDetailOverlay.close();
+                    contactDetailOverlayVisible = false;
+                    event.consume();
+                } else {
+                    System.exit(0);
+                }
             }
         });
 
@@ -193,6 +202,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
         if (settingsConfig.isAutoDial() && contact.hasOnlyOneNumber()) {
             onCallNumber(contact.getNumbers().get(0), contact);
         } else {
+            contactDetailOverlayVisible = true;
             ContactDetailOverlay.show(storageService, this, contact);
         }
     }
@@ -209,5 +219,10 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
         MostDialedContactsProvider.getInstance().addDialedContact(contact);
         nativeService.sendTextMessage(phone.getNumber());
         clearSearch();
+    }
+
+    @Override
+    public void onCancelled() {
+        contactDetailOverlayVisible = false;
     }
 }
