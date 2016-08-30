@@ -62,7 +62,7 @@ public class AndroidNativeService implements NativeService {
                 id = cur.getString(0);
                 c.setId(id);
                 fillNameDetails(id, c, cur.getString(1), cr);
-                c.setHasImageData(true);
+                setImageAvailability(cr, c);
                 if (Integer
                         .parseInt(cur.getString(2)) > 0 && c.hasName()) {
                     contacts.add(c);
@@ -114,6 +114,17 @@ public class AndroidNativeService implements NativeService {
 
     }
 
+    private void setImageAvailability(ContentResolver cr, Contact c) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
+                Long.valueOf(c.getId()));
+        InputStream stream = ContactsContract.Contacts.openContactPhotoInputStream(cr, contactUri, false);
+        if (stream != null) {
+            c.setHasImageData(true);
+        } else {
+            c.setHasImageData(false);
+        }
+    }
+
     private PhoneType getType(String type) {
         if (type.equals("1")) {
             return PhoneType.HOME;
@@ -151,7 +162,7 @@ public class AndroidNativeService implements NativeService {
 
     public byte[] convertImageToByte(Uri uri){
         InputStream inputStream = ContactsContract.Contacts
-                .openContactPhotoInputStream(FXActivity.getInstance().getContentResolver(), uri, true);
+                .openContactPhotoInputStream(FXActivity.getInstance().getContentResolver(), uri, false);
         if (inputStream != null) {
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
