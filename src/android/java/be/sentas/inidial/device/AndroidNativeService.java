@@ -47,7 +47,6 @@ public class AndroidNativeService implements NativeService {
 
     @Override
     public List<Contact> getContacts() {
-
         ContentResolver cr = FXActivity.getInstance().getContentResolver();
         List<Contact> contacts = new ArrayList<Contact>();
         String id;
@@ -111,7 +110,6 @@ public class AndroidNativeService implements NativeService {
             }
         }
         return (contacts);
-
     }
 
     private void setImageAvailability(ContentResolver cr, Contact c) {
@@ -170,5 +168,44 @@ public class AndroidNativeService implements NativeService {
             return baos.toByteArray();
         }
         return null;
+    }
+
+    public List<Contact> getDummyContacts() {
+        List<Contact> persons = new ArrayList<Contact>();
+        Contact p1 = new Contact("John", "Jacobs");
+        p1.getNumbers().add(new Phone("+3234561234", PhoneType.HOME));
+        p1.getNumbers().add(new Phone("+3249755343", PhoneType.WORK));
+        p1.getNumbers().add(new Phone("+3234561234", PhoneType.MOBILE));
+        persons.add(p1);
+        Contact p2 = new Contact("Peter","Van der Beek");
+        p2.getNumbers().add(new Phone("+3234777777", PhoneType.HOME));
+        p2.getNumbers().add(new Phone("+3234561234", PhoneType.MOBILE));
+        persons.add(p2);
+        Contact p3 = new Contact("Tim", "Heffner");
+        p3.getNumbers().add(new Phone("+32497123456", PhoneType.HOME));
+        p3.getNumbers().add(new Phone("+3234561234", PhoneType.OTHER));
+        p3.getNumbers().add(new Phone("+32326547894", PhoneType.MOBILE));
+        persons.add(p3);
+        Contact p4 = new Contact("Andrew","Totter");
+        p4.getNumbers().add(new Phone("+3234561234", PhoneType.HOME));
+        persons.add(p4);
+        Contact p5 = new Contact("Yannick", "Epson");
+        p5.getNumbers().add(new Phone("+3234561234", PhoneType.HOME));
+        p5.getNumbers().add(new Phone("+32497123456", PhoneType.WORK));
+        persons.add(p5);
+        Contact p6 = new Contact("Herman", "Baker");
+        p6.getNumbers().add(new Phone("+3234561234", PhoneType.HOME));
+        p6.getNumbers().add(new Phone("+32497123456", PhoneType.WORK));
+        persons.add(p6);
+        Contact p7 = new Contact("Marc", "Omar");
+        p7.getNumbers().add(new Phone("+3234561234", PhoneType.HOME));
+        p7.getNumbers().add(new Phone("+32497123456", PhoneType.WORK));
+        persons.add(p7);
+        Contact p8 = new Contact("James", "Wagner");
+        p8.getNumbers().add(new Phone("+3234561234", PhoneType.HOME));
+        p8.getNumbers().add(new Phone("+3249755343", PhoneType.OTHER));
+        p8.getNumbers().add(new Phone("+3234561234", PhoneType.MOBILE));
+        persons.add(p8);
+        return persons;
     }
 }

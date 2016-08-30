@@ -1,5 +1,6 @@
 package be.sentas.inidial.views;
 
+import be.sentas.inidial.device.Logger;
 import be.sentas.inidial.model.Phone;
 import be.sentas.inidial.model.PhoneType;
 import com.gluonhq.charm.glisten.control.CharmListCell;
@@ -47,6 +48,7 @@ public class PhoneListCell extends CharmListCell<Phone> {
             number.getStyleClass().add("phoneListNumber");
             if (item.getType() == PhoneType.MOBILE) {
                 textButton = MaterialDesignIcon.TEXTSMS.button(e -> listener.onTextNumber(item));
+                textButton.setStyle("-fx-background-color: #2284c5");
                 hContainer = new HBox();
                 vContainer.setMaxWidth(Double.MAX_VALUE);
                 HBox.setHgrow(vContainer, Priority.ALWAYS);
