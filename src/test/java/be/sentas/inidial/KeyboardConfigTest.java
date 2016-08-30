@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by yannick on 30/08/16.
@@ -46,9 +48,9 @@ public class KeyboardConfigTest {
                 new KeyboardConfig.Key("B", false),
                 new KeyboardConfig.Key("N", false),
                 new KeyboardConfig.Key("M", false));
-        assertEquals("firstRow should be valid", firstRow , config.getFirstRow().getKeys());
-        assertEquals("secondRow should be valid", secondRow , config.getSecondRow().getKeys());
-        assertEquals("thirdRow should be valid", thirdRow , config.getThirdRow().getKeys());
+        assertThat(config.getFirstRow().getKeys()).isEqualTo(firstRow);
+        assertThat(config.getSecondRow().getKeys()).isEqualTo(secondRow);
+        assertThat(config.getThirdRow().getKeys()).isEqualTo(thirdRow);
     }
 
     @Test
@@ -83,9 +85,9 @@ public class KeyboardConfigTest {
                 new KeyboardConfig.Key("B", false),
                 new KeyboardConfig.Key("N", true),
                 new KeyboardConfig.Key("M", false));
-        assertEquals("firstRow should be valid", firstRow , config.getFirstRow().getKeys());
-        assertEquals("secondRow should be valid", secondRow , config.getSecondRow().getKeys());
-        assertEquals("thirdRow should be valid", thirdRow , config.getThirdRow().getKeys());
+        assertThat(config.getFirstRow().getKeys()).isEqualTo(firstRow);
+        assertThat(config.getSecondRow().getKeys()).isEqualTo(secondRow);
+        assertThat(config.getThirdRow().getKeys()).isEqualTo(thirdRow);
     }
 
     @Test
@@ -120,8 +122,8 @@ public class KeyboardConfigTest {
                 new KeyboardConfig.Key("V", false),
                 new KeyboardConfig.Key("B", false),
                 new KeyboardConfig.Key("N", false));
-        assertEquals("firstRow should be valid", firstRow , config.getFirstRow().getKeys());
-        assertEquals("secondRow should be valid", secondRow , config.getSecondRow().getKeys());
-        assertEquals("thirdRow should be valid", thirdRow , config.getThirdRow().getKeys());
+        assertThat(config.getFirstRow().getKeys()).isEqualTo(firstRow);
+        assertThat(config.getSecondRow().getKeys()).isEqualTo(secondRow);
+        assertThat(config.getThirdRow().getKeys()).isEqualTo(thirdRow);
     }
 }

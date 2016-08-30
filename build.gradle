@@ -27,6 +27,7 @@ dependencies {
     desktopRuntime 'com.gluonhq:charm-desktop:3.0.0'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.5.2'
 }
 
 jfxmobile {
