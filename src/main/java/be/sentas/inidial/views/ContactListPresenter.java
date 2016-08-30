@@ -124,7 +124,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
 
     private void initAppBar() {
         AppBar appBar = MobileApplication.getInstance().getAppBar();
-        appBar.setTitleText("Inidial");
+        appBar.setTitleText("iniDial");
         appBar.getActionItems().add(MaterialDesignIcon.SETTINGS.button(e ->
                 MobileApplication.getInstance().switchView(InidialApp.SETTINGS_VIEW)));
     }
