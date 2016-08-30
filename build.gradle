@@ -25,6 +25,8 @@ dependencies {
     androidRuntime 'com.gluonhq:charm-android:3.0.0'
     iosRuntime 'com.gluonhq:charm-ios:3.0.0'
     desktopRuntime 'com.gluonhq:charm-desktop:3.0.0'
+
+    testCompile 'junit:junit:4.12'
 }
 
 jfxmobile {

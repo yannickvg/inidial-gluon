@@ -86,6 +86,33 @@ public class KeyboardConfig {
         public boolean isEnabled() {
             return enabled;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Key key = (Key) o;
+
+            if (enabled != key.enabled) return false;
+            return symbol.equals(key.symbol);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = symbol.hashCode();
+            result = 31 * result + (enabled ? 1 : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Key{" +
+                    "symbol='" + symbol + '\'' +
+                    ", enabled=" + enabled +
+                    '}';
+        }
     }
 
     public static class Row {
