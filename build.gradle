@@ -1,9 +1,15 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url 'http://nexus.gluonhq.com/nexus/content/repositories/releases'
+        }
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
     }
     dependencies {
-        classpath 'org.javafxports:jfxmobile-plugin:1.0.8'
+        classpath 'org.javafxports:jfxmobile-plugin:1.0.9-SNAPSHOT'
     }
 }
 
@@ -14,6 +20,10 @@ repositories {
     maven {
         url 'http://nexus.gluonhq.com/nexus/content/repositories/releases'
     }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+
 }
 
 mainClassName = 'be.sentas.inidial.InidialApp'
@@ -33,6 +43,7 @@ dependencies {
 jfxmobile {
     android {
         manifest = 'src/android/AndroidManifest.xml'
+        preview = true
     }
     ios {
         infoPList = file('src/ios/Default-Info.plist')
