@@ -211,6 +211,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     public void onCallNumber(Phone phone, Contact contact) {
         MostDialedContactsProvider.getInstance().addDialedContact(contact);
         nativeService.callNumber(phone.getNumber());
+        contactDetailOverlayVisible = false;
         clearSearch();
     }
 
@@ -218,6 +219,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     public void onTextNumber(Phone phone, Contact contact) {
         MostDialedContactsProvider.getInstance().addDialedContact(contact);
         nativeService.sendTextMessage(phone.getNumber());
+        contactDetailOverlayVisible = false;
         clearSearch();
     }
 
