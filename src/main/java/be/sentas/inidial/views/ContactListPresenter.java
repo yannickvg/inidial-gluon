@@ -55,6 +55,7 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     final NativeService nativeService = NativePlatformFactory.getPlatform().getNativeService();
     private Button clearButton;
     private boolean contactDetailOverlayVisible;
+    private boolean settingsClicked;
 
     public void initialize() {
         mainView.showingProperty().addListener((obs, oldValue, newValue) -> {
@@ -76,8 +77,10 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
                     ContactDetailOverlay.close();
                     contactDetailOverlayVisible = false;
                     event.consume();
-                } else {
+                } else if (!settingsClicked){
                     System.exit(0);
+                } else {
+                    settingsClicked = false;
                 }
             }
         });
@@ -125,8 +128,11 @@ public class ContactListPresenter implements Keyboard.OnInteractionListener, Con
     private void initAppBar() {
         AppBar appBar = MobileApplication.getInstance().getAppBar();
         appBar.setTitleText("iniDial");
-        appBar.getActionItems().add(MaterialDesignIcon.SETTINGS.button(e ->
-                MobileApplication.getInstance().switchView(InidialApp.SETTINGS_VIEW)));
+        appBar.getActionItems().add(MaterialDesignIcon.SETTINGS.button(e -> {
+            settingsClicked = true;
+            MobileApplication.getInstance().switchView(InidialApp.SETTINGS_VIEW);
+        }
+        ));
     }
 
     private void initHeader() {
