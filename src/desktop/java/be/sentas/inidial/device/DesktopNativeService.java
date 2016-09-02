@@ -23,6 +23,11 @@ public class DesktopNativeService implements NativeService {
 
     @Override
     public List<Contact> getContacts() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<Contact> contacts = new ArrayList<>();
         Contact yannick = new Contact("Yannick", "Van Godtsenhoven");
         yannick.setId("1");

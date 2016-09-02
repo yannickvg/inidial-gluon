@@ -5,15 +5,14 @@ import be.sentas.inidial.device.NativePlatformFactory;
 import be.sentas.inidial.device.NativeService;
 import be.sentas.inidial.service.InitialsService;
 import com.gluonhq.charm.glisten.application.MobileApplication;
-import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.mvc.View;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 public class SplashPresenter {
@@ -31,16 +30,24 @@ public class SplashPresenter {
         splash.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 MobileApplication.getInstance().getAppBar().setVisible(false);
+                RotateTransition rt = new RotateTransition(Duration.millis(6000), stripes);
+                rt.setByAngle(360);
+                rt.setCycleCount(Animation.INDEFINITE);
+                rt.setInterpolator(Interpolator.LINEAR);
+                rt.play();
             }
-            RotateTransition rt = new RotateTransition(Duration.millis(6000), stripes);
-            rt.setByAngle(360);
-            rt.setCycleCount(Animation.INDEFINITE);
-            rt.setInterpolator(Interpolator.LINEAR);
-            rt.play();
         });
 
-        InitialsService.createService(nativeService.getContacts());
-        Platform.runLater(() -> MobileApplication.getInstance().switchView(InidialApp.CONTACTS_VIEW));
+        Task task = new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+                InitialsService.createService(nativeService.getContacts());
+                Platform.runLater(() -> MobileApplication.getInstance().switchView(InidialApp.CONTACTS_VIEW));
+                return null;
+            }
+        };
+        Thread th = new Thread(task);
+        th.start();
     }
 
 }
