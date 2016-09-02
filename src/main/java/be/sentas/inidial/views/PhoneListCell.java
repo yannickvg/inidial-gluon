@@ -52,6 +52,7 @@ public class PhoneListCell extends CharmListCell<Phone> {
                 hContainer = new HBox();
                 vContainer.setMaxWidth(Double.MAX_VALUE);
                 HBox.setHgrow(vContainer, Priority.ALWAYS);
+                HBox.setMargin(textButton, new Insets(0, 8, 0, 8));
                 hContainer.getChildren().addAll(vContainer, textButton);
                 setGraphic(hContainer);
             } else {

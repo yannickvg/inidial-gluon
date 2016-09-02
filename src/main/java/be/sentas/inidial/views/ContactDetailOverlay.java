@@ -6,10 +6,7 @@ import be.sentas.inidial.service.StorageService;
 import com.gluonhq.charm.glisten.application.GlassPane;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.layout.Layer;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXMLLoader;
-import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -25,6 +22,8 @@ public class ContactDetailOverlay extends Layer implements ContactDetailDialog.O
     private OnInteractionListener listener;
 
     private StorageService storageService;
+
+    private ContactDetailDialog dialog;
 
     public ContactDetailOverlay(StorageService storageService, OnInteractionListener listener, Contact contact) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -44,13 +43,6 @@ public class ContactDetailOverlay extends Layer implements ContactDetailDialog.O
         showDialog(contact);
     }
 
-    private void showDialog(Contact contact) {
-        final ContactDetailDialog dialog = new ContactDetailDialog(storageService, this, contact);
-        getChildren().add(dialog);
-        dialog.show();
-    }
-
-
     private void relocateOverlayToCenter() {
         GlassPane glassPane = MobileApplication.getInstance().getGlassPane();
         double newX = (glassPane.getWidth()) / 2;
@@ -61,36 +53,51 @@ public class ContactDetailOverlay extends Layer implements ContactDetailDialog.O
 
     public static void show(StorageService storageService, OnInteractionListener listener, Contact contact) {
         overlay = new ContactDetailOverlay(storageService, listener, contact);
-        MobileApplication.getInstance().getGlassPane().setBackgroundFade(DEFAULT_BACKGROUND_FADE_LEVEL);
-        MobileApplication.getInstance().getGlassPane().getLayers().add(overlay);
+        overlay.showOverlay();
     }
 
     public static void close() {
-        overlay.closeDialog();
+        overlay.cancel();
     }
 
     @Override
     public void onCallNumber(Phone phone, Contact contact) {
         listener.onCallNumber(phone, contact);
-        closeDialog();
+        closeOverlay();
     }
 
     @Override
     public void onTextNumber(Phone phone, Contact contact) {
         listener.onTextNumber(phone, contact);
-        closeDialog();
+        closeOverlay();
     }
 
+    private void cancel() {
+        if (dialog != null) {
+            dialog.cancel();
+        }
+    }
 
     @Override
     public void onCancelled() {
         listener.onCancelled();
-        closeDialog();
+        closeOverlay();
     }
 
-    private void closeDialog() {
+    private void showDialog(Contact contact) {
+        dialog = new ContactDetailDialog(storageService, this, contact);
+        getChildren().add(dialog);
+        dialog.show();
+    }
+
+    private void showOverlay() {
+        MobileApplication.getInstance().getGlassPane().setBackgroundFade(DEFAULT_BACKGROUND_FADE_LEVEL);
+        MobileApplication.getInstance().getGlassPane().getLayers().add(this);
+    }
+
+    private void closeOverlay() {
         MobileApplication.getInstance().getGlassPane().setBackgroundFade(0);
-        MobileApplication.getInstance().getGlassPane().getLayers().remove(overlay);
+        MobileApplication.getInstance().getGlassPane().getLayers().remove(this);
         overlay = null;
     }
 

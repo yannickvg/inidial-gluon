@@ -83,7 +83,8 @@ public class ContactDetailDialog extends VBox implements PhoneListCell.OnInterac
     private void initHeader() {
         name.setText(contact.getDisplayName(settingsConfig.getNameDirection()));
         Button cancelButton = MaterialDesignIcon.CLEAR.button(e -> cancel());
-        HBox.setMargin(cancelButton, new Insets(10, 5, 10, 0));
+        cancelButton.setStyle("-fx-background-color: #2284c5");
+        HBox.setMargin(cancelButton, new Insets(10, 16, 10, 0));
         header.getChildren().add(cancelButton);
         Rectangle divider = new Rectangle();
         divider.setWidth(glassPane.getWidth());
@@ -111,6 +112,8 @@ public class ContactDetailDialog extends VBox implements PhoneListCell.OnInterac
         moveDialogUp();
     }
 
+
+
     private void updateSettings() {
         settingsConfig = storageService.settingsConfigProperty().get();
     }
@@ -137,7 +140,7 @@ public class ContactDetailDialog extends VBox implements PhoneListCell.OnInterac
         transitionUp.play();
     }
 
-    private void cancel() {
+    void cancel() {
         moveDialogDown(null, null);
     }
 
