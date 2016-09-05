@@ -16,6 +16,11 @@
                     <Insets left="10" right="10" />
                 </padding>
             </Label>
+             <Label fx:id="reloadContacts" onMouseClicked="#reloadContacts" prefHeight="50" maxWidth="Infinity" text="Import contacts" alignment="CENTER_LEFT" style="-fx-font-size: 16;-fx-border-color: #D2D2D2;-fx-border-width: 1;">
+                 <padding>
+                     <Insets left="10" right="10" />
+                 </padding>
+             </Label>
             <SettingsPane fx:id="settingsPane"/>
          </children>
       </VBox>

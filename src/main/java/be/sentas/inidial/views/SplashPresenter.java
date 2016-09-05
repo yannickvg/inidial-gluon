@@ -32,13 +32,14 @@ public class SplashPresenter {
     public static final String LAST_SYNC_DATE = "lastSyncDate";
     public static final String CONTACTS = "contacts";
     public static final int INTERVAL_IN_MILLIS = 1000 * 60 * 60 * 24;
+
     @FXML
     private View splash;
 
     @FXML
     private ImageView stripes;
 
-    SettingService settingService = PlatformFactory.getPlatform().getSettingService();
+    private SettingService settingService = PlatformFactory.getPlatform().getSettingService();
 
     final NativeService nativeService = NativePlatformFactory.getPlatform().getNativeService();
 

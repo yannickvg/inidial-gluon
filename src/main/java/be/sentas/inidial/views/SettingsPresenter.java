@@ -6,6 +6,8 @@ import be.sentas.inidial.model.MostDialedContactsProvider;
 import be.sentas.inidial.model.NameDirection;
 import be.sentas.inidial.model.SettingsConfig;
 import be.sentas.inidial.service.StorageService;
+import com.gluonhq.charm.down.common.PlatformFactory;
+import com.gluonhq.charm.down.common.SettingService;
 import com.gluonhq.charm.glisten.animation.BounceInRightTransition;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.Alert;
@@ -21,7 +23,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -41,6 +42,8 @@ public class SettingsPresenter {
     private StorageService storageService;
 
     private SettingsConfig settingsConfig;
+
+    private SettingService settingService = PlatformFactory.getPlatform().getSettingService();
 
     public void initialize() {
         settings.setShowTransitionFactory(BounceInRightTransition::new);
@@ -122,5 +125,14 @@ public class SettingsPresenter {
         if(result.isPresent() && result.get().equals(ButtonType.YES)){
             MostDialedContactsProvider.getInstance().clear();
         }
+    }
+
+    @FXML
+    void reloadContacts() {
+        settingService.remove(SplashPresenter.LAST_SYNC_DATE);
+        MobileApplication mobileApplication = MobileApplication.getInstance();
+        mobileApplication.removeViewFactory(InidialApp.SPLASH_VIEW);
+        mobileApplication.addViewFactory(InidialApp.SPLASH_VIEW, () -> (View) new SplashView().getView());
+        mobileApplication.switchView(InidialApp.SPLASH_VIEW);
     }
 }
