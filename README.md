@@ -1,29 +1,28 @@
-# README #
+# iniDial-Gluon #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Call or text everybody fast, no configuration needed!
 
-### What is this repository for? ###
+### Description ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Tired of having to go through a lot of steps to search for a certain contact? 
+Now you can call and text your contacts, very fast...
+  
+iniDial-Gluon is a speeddialer, based on the initials of your contacts.
+No configuration needed, no favorites to choose, all your contacts can be called or texted in the same fast way.
+  
+Most Important Features:
+  
+ * select contacts through their first letters
+ * call or text them
+ * homescreen shows a list of people you call most while using the app
+ * smart keyboard, only valid next letters of your contact's initials are enabled
+ * multiple keyboard layouts supported
+ * 'automatic dialing' option = if a contact only has one number, automatically start dialing
 
-### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+### Gluon Features ###
 
-### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
+### Contact ###
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* yannick@sentas.be
