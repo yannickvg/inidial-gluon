@@ -2,9 +2,6 @@ package be.sentas.inidial.model;
 
 import java.util.Comparator;
 
-/**
- * Created by yannick on 14/08/16.
- */
 public class ContactComparator implements Comparator<Contact> {
 
     private NameDirection direction;

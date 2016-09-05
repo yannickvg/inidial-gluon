@@ -1,7 +1,6 @@
 package be.sentas.inidial.views;
 
 import be.sentas.inidial.InidialApp;
-import be.sentas.inidial.device.Logger;
 import be.sentas.inidial.device.NativePlatformFactory;
 import be.sentas.inidial.device.NativeService;
 import be.sentas.inidial.model.*;

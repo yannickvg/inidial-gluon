@@ -2,9 +2,6 @@ package be.sentas.inidial.device;
 
 import com.gluonhq.charm.down.common.JavaFXPlatform;
 
-/**
- * Created by yannick on 15/08/16.
- */
 public class NativePlatformFactory {
 
     public static NativePlatform getPlatform() {

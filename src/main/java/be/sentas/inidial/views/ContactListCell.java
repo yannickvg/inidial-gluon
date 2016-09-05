@@ -13,9 +13,6 @@ import javafx.scene.layout.HBox;
 
 import java.io.ByteArrayInputStream;
 
-/**
- * Created by yannick on 11/08/16.
- */
 public class ContactListCell extends CharmListCell<Contact> {
 
     private final HBox container;

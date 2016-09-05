@@ -1,6 +1,5 @@
 package be.sentas.inidial.views;
 
-import be.sentas.inidial.device.Logger;
 import be.sentas.inidial.model.Phone;
 import be.sentas.inidial.model.PhoneType;
 import com.gluonhq.charm.glisten.control.CharmListCell;
@@ -13,9 +12,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-/**
- * Created by yannick on 11/08/16.
- */
 public class PhoneListCell extends CharmListCell<Phone> {
 
     private HBox hContainer;

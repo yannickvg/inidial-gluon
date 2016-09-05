@@ -12,9 +12,6 @@ import javafx.beans.property.SimpleObjectProperty;
 
 import javax.annotation.PostConstruct;
 
-/**
- * Created by yannick on 14/08/16.
- */
 public class StorageService {
 
     private static final String SETTINGS_CONFIG = "settingsConfig";

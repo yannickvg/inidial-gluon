@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by yannick on 13/08/16.
- */
 public class KeyboardConfig {
 
     private Row firstRow;

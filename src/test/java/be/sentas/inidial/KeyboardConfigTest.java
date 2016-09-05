@@ -11,9 +11,6 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by yannick on 30/08/16.
- */
 public class KeyboardConfigTest {
 
     @Test

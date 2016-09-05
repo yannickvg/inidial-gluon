@@ -10,9 +10,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by yannick on 20/08/16.
- */
 public class MostDialedContactsProvider {
 
     public static final String CONTACTS_KEY = "mostDialedContacts";

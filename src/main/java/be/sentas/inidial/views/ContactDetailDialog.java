@@ -26,9 +26,6 @@ import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-/**
- * Created by yannick on 11/08/16.
- */
 public class ContactDetailDialog extends VBox implements PhoneListCell.OnInteractionListener {
 
     @FXML

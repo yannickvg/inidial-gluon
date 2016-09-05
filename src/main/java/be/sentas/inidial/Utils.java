@@ -3,9 +3,6 @@ package be.sentas.inidial;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by yannick on 17/08/16.
- */
 public class Utils {
 
     public static boolean isNotBlank(String value) {

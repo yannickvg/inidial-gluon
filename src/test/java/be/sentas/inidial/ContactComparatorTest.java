@@ -7,10 +7,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-/**
- * Created by yannick on 30/08/16.
- */
 public class ContactComparatorTest {
 
     @Test

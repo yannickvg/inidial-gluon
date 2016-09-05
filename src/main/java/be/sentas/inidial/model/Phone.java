@@ -1,8 +1,5 @@
 package be.sentas.inidial.model;
 
-/**
- * Created by yannick on 11/08/16.
- */
 public class Phone {
 
     private String contactId;

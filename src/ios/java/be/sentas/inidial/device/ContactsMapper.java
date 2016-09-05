@@ -12,9 +12,6 @@ import org.robovm.apple.foundation.NSArray;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by yannick on 17/08/16.
- */
 public class ContactsMapper {
     public static List<Contact> map(NSArray<CNContact> iOSContacts) {
         List<Contact> contacts = new ArrayList<>();

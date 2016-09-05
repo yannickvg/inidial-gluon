@@ -24,9 +24,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by yannick on 15/08/16.
- */
 public class AndroidNativeService implements NativeService {
 
     private static final String TAG = "InidialGluon";

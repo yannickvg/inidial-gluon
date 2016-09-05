@@ -12,9 +12,6 @@ import java.io.IOException;
 
 import static com.gluonhq.charm.glisten.application.GlassPane.DEFAULT_BACKGROUND_FADE_LEVEL;
 
-/**
- * Created by yannick on 11/08/16.
- */
 public class ContactDetailOverlay extends Layer implements ContactDetailDialog.OnInteractionListener {
 
     private static ContactDetailOverlay overlay;
