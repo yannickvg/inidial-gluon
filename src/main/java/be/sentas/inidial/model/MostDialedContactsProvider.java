@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class MostDialedContactsProvider {
 
-    public static final String CONTACTS_KEY = "contacts";
+    public static final String CONTACTS_KEY = "mostDialedContacts";
     private static MostDialedContactsProvider instance;
 
     private MostDialedContactsProvider() {
