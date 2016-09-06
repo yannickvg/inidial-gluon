@@ -22,6 +22,21 @@ Most Important Features:
 
 ### Gluon Features ###
 
+This app is written to evalulate the features and ease of writing
+
+* Use Gluon Mobile for cross platform mobile development. The same codebase supports Android and iOS.
+* Android version available @ http://play.google.com
+* Uses Gluon Glisten for UI
+* Custom component for contact details overlay
+* Custom component for smart keyboard
+* Uses Gluon Down for native functionality
+    * Access contacts of the device
+    * Launch native calling from within the app
+* Settings View
+* Uses connect settings service to store values
+* Cross platform logging (to be extended)
+
+
 
 ### Contact ###
 
