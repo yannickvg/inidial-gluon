@@ -36,3 +36,11 @@ It has been submitted for the [Gluon App Contest](http://gluonhq.com/contests/gl
 * Settings View
 * Uses Gluon Down settings service to store values
 * Cross-platform logging (to be improved)
+
+### Tested on ###
+
+* Android
+    * Motorola MotoG 2015
+    * Google Nexus 5X
+* iOS
+    * Simulator
