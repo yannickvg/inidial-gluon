@@ -23,7 +23,7 @@ Most Important Features:
 ### Gluon Features ###
 
 This app is written as a test to evaluate the features and ease of writing cross-platform applications in JavaFX for mobile devices.
-It has been submitted for the [Gluon App Contest](http://gluonhq.com/contests/gluon-app-contest/). It is available in Google Play, but currenty not in the App Store since I'm not enrolled in the Apple Developer Program. 
+It has been submitted for the [Gluon App Contest](http://gluonhq.com/contests/gluon-app-contest/). It is available in Google Play, but currently not in the App Store since I'm not enrolled in the Apple Developer Program. 
 
 * Use Gluon Mobile for cross-platform mobile development. The same codebase supports Android and iOS.
 * Android version available @ [Google Play](https://play.google.com/store/apps/details?id=be.sentas.inidialgluon)
