@@ -34,5 +34,5 @@ It has been submitted for the [Gluon App Contest](http://gluonhq.com/contests/gl
     * Access contacts of the device
     * Launch native calling from within the app
 * Settings View
-* Uses connect settings service to store values
-* Cross platform logging (to be extended)
+* Uses Gluon Down settings service to store values
+* Cross-platform logging (to be improved)
