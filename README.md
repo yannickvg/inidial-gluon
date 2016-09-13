@@ -17,7 +17,8 @@ Most Important Features:
  * homescreen shows a list of people you call most while using the app
  * smart keyboard, only valid next letters of your contact's initials are enabled
  * multiple keyboard layouts supported
- * 'automatic dialing' option = if a contact only has one number, automatically start dialing
+ * 'automatic dialing' option = if a contact only has one number, automatically start 
+ * displays contact images
 
 
 ### Gluon Features ###
