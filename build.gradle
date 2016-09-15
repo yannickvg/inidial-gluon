@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'org.javafxports:jfxmobile-plugin:1.0.9-SNAPSHOT'
+        classpath 'org.javafxports:jfxmobile-plugin:1.0.8'
     }
 }
 
@@ -43,7 +43,6 @@ dependencies {
 jfxmobile {
     android {
         manifest = 'src/android/AndroidManifest.xml'
-        preview = true
     }
     ios {
         infoPList = file('src/ios/Default-Info.plist')
